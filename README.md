@@ -324,11 +324,13 @@ Android 的网络类型获取可以参考文档：[http://developer.android.com/
 
 语言名称格式如下：
 
-    <语言代码>_<区域代码>
+```
+<语言代码>_<区域代码>
+```
 
-其中语言代码参考 [ISO 639-1](http://www.loc.gov/standards/iso639-2/php/code_list.php) [wikipedia](http://zh.wikipedia.org/wiki/ISO_3166-1) ， 区域代码参考 [ISO 3166-1-alpha-2](http://www.iso.org/iso/en/prods-services/iso3166ma/02iso-3166-code-lists/list-en1.html) [wikipedia](http://zh.wikipedia.org/wiki/ISO_639-1)
+其中语言代码参考 [ISO 639-1](http://www.loc.gov/standards/iso639-2/php/code_list.php) [wikipedia](http://zh.wikipedia.org/wiki/ISO_639-1) ， 区域代码参考 [ISO 3166-1 alpha-2]() [wikipedia](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
 
-PS. 感谢资料提供者 Android 文档（[http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier](http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier)），顺便鄙视 iOS 文档在获取语言接口的相关文档里根本不提这个
+PS. 感谢资料提供者 Android 文档（[http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier](http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier)），顺便鄙视 iOS 文档在获取语言接口的相关文档里根本不提这个。
 
 ## 跨域
 
