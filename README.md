@@ -47,7 +47,7 @@ language-script-region-variant-extension-privateuse
 
 考虑到维护这样一份列表可能会产生一定的困扰，因此也可以使用请求头 `Time-Offset: +0800` 来替代（[来源](http://blogs.windwardreports.com/davidt/2010/04/can-we-please-get-a-time-zone-in-the-http-request-header.html?cid=6a0115711bf0ae970b01347fd28db8970c#comment-6a0115711bf0ae970b01347fd28db8970c-content)）
 
-如果客户端请求时没有指定相应的时区，则服务端默认使用格林尼治时间返回相应数据。
+如果客户端请求时没有指定相应的时区，则服务端默认使用 [UTC](http://zh.wikipedia.org/wiki/%E5%8D%8F%E8%B0%83%E4%B8%96%E7%95%8C%E6%97%B6) 时间返回相应数据。
 
 ### 时间格式
 
