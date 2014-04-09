@@ -14,7 +14,42 @@ HOST 地址：
 
 接口遵循“输入宽容，输出严格”原则，输出的数据结构中空字段的值一律为 `null`
 
-## 时间格式
+## 国际化
+
+### 语言名称
+
+[RFC 5646](http://tools.ietf.org/html/rfc5646) 规定的语言的标签的格式如下：
+
+```
+language-script-region-variant-extension-privateuse
+```
+
+1. language：这部分是 [ISO 639](http://www.loc.gov/standards/iso639-2/php/code_list.php) [wikipedia](http://zh.wikipedia.org/wiki/ISO_639-1) 规定的代码，比如中文是 zh。
+2. script：表示变体，比如简体汉字是 zh-Hans ，繁体汉字是 zh-Hant 。
+3. region：是 [ISO 3166-1](javascript:;) [wikipedia](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) 规定的地理区域，比如 zh-Hans-CN 就是中国大陆使用的简体中文。
+4. variant：表示方言。
+5. extension：表示扩展。
+6. privateus：表示私有标识。
+
+**有一点需要注意，任何合法的标签都必须经过IANA的认证，已通过认证的标签可以在[这个网页](http://www.iana.org/assignments/language-subtag-registry)查到。此外，网上还有一个非官方的[标签搜索引擎](http://people.w3.org/rishida/utils/subtags/)。**
+
+相关链接：
+
+* Android 文档：[http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier](http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier) ，顺便鄙视 iOS 文档在获取语言接口的相关文档里根本不提这个。
+* 《语种名称代码》：[http://www.ruanyifeng.com/blog/2008/02/codes_for_language_names.html](http://www.ruanyifeng.com/blog/2008/02/codes_for_language_names.html)
+* 《Language tags in HTML and XML》：[http://www.w3.org/International/articles/language-tags/](http://www.w3.org/International/articles/language-tags/)
+
+### 时区
+
+客户端请求服务器时，如果对时间有特殊要求（如某段时间每天的统计信息），则可以参考 [IETF 相关草案](http://tools.ietf.org/html/draft-sharhalakis-httptz-05) 增加请求头 `Timezone: Asia/Shanghai` ，或者现在可能更常见的请求头（ GitHub 使用的） `Time-Zone: Asia/Shanghai` 。
+
+时区的名称可以参考 [tz datebase](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) 。
+
+考虑到维护这样一份列表可能会产生一定的困扰，因此也可以使用请求头 `Time-Offset: +0800` 来替代（[来源](http://blogs.windwardreports.com/davidt/2010/04/can-we-please-get-a-time-zone-in-the-http-request-header.html?cid=6a0115711bf0ae970b01347fd28db8970c#comment-6a0115711bf0ae970b01347fd28db8970c-content)）
+
+如果客户端请求时没有指定相应的时区，则服务端默认使用格林尼治时间返回相应数据。
+
+### 时间格式
 
 时间格式遵循 [ISO 8601](http://zh.wikipedia.org/w/index.php?title=ISO_8601) 表示方法，也就是常见的 [UTC](http://zh.wikipedia.org/wiki/%E5%8D%8F%E8%B0%83%E4%B8%96%E7%95%8C%E6%97%B6) 时间：
 
@@ -319,18 +354,6 @@ Status: 304 Not Modified
     User-Agent: Android/4.2 (MI-ONE Plus; MIUI-2.3.6f; unrooted; GPRS; zh_TW) com.gezbox.iphonecase/2.1 stenographer/...
 
 Android 的网络类型获取可以参考文档：[http://developer.android.com/reference/android/telephony/TelephonyManager.html](http://developer.android.com/reference/android/telephony/TelephonyManager.html)
-
-## 语言名称
-
-语言名称格式如下：
-
-```
-<语言代码>_<区域代码>
-```
-
-其中语言代码参考 [ISO 639-1](http://www.loc.gov/standards/iso639-2/php/code_list.php) [wikipedia](http://zh.wikipedia.org/wiki/ISO_639-1) ， 区域代码参考 [ISO 3166-1 alpha-2]() [wikipedia](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
-
-PS. 感谢资料提供者 Android 文档（[http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier](http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier)），顺便鄙视 iOS 文档在获取语言接口的相关文档里根本不提这个。
 
 ## 跨域
 
