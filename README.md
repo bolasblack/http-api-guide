@@ -51,7 +51,7 @@ language-script-region-variant-extension-privateuse
 
 ### 时间格式
 
-时间格式遵循 [ISO 8601](http://zh.wikipedia.org/w/index.php?title=ISO_8601) 表示方法，也就是常见的 [UTC](http://zh.wikipedia.org/wiki/%E5%8D%8F%E8%B0%83%E4%B8%96%E7%95%8C%E6%97%B6) 时间：
+时间格式遵循 [ISO 8601](http://zh.wikipedia.org/w/index.php?title=ISO_8601) 表示方法
 
     YYYY-MM-DDTHH:MM:SSZ
 
