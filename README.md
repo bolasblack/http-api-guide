@@ -114,7 +114,7 @@ language-script-region-variant-extension-privateuse
 * 500 **Internal Server Error** : 服务器遇到了一个未曾预料的状况，导致了它无法完成对请求的处理。
 * 501 **Not Implemented** : 服务器不支持当前请求所需要的某个功能。
 * 502 **Bad Gateway** : 作为网关或者代理工作的服务器尝试执行请求时，从上游服务器接收到无效的响应。
-* 503 **Service Unavailable** : 由于临时的服务器维护或者过载，服务器当前无法处理请求。这个状况是临时的，并且将在一段时间以后恢复。如果能够预计延迟时间，那么响应中可以包含一个 `Retry-After` 头用以标明这个延迟时间。如果没有给出这个 `Retry-After` 信息，那么客户端应当以处理 500 响应的方式处理它。
+* 503 **Service Unavailable** : 由于临时的服务器维护或者过载，服务器当前无法处理请求。这个状况是临时的，并且将在一段时间以后恢复。如果能够预计延迟时间，那么响应中可以包含一个 `Retry-After` 头用以标明这个延迟时间（内容可以为数字，单位为秒；或者是一个 [HTTP 协议指定的时间格式](http://tools.ietf.org/html/rfc2616#section-3.3)）。如果没有给出这个 `Retry-After` 信息，那么客户端应当以处理 500 响应的方式处理它。
 
 `501` 与 `405` 的区别是：`405` 是表示服务端不允许客户端这么做，`501` 是表示客户端或许可以这么做，但服务端还没有实现这个功能
 
@@ -123,6 +123,14 @@ language-script-region-variant-extension-privateuse
 在调用接口的过程中，可能出现下列几种错误情况：
 
 * 服务器维护中，`503` 状态码
+
+    ```http
+    HTTP/1.1 503 Service Unavailable
+    Retry-After: 3600
+    Content-Length: 41
+
+    {"message": "Service In the maintenance"}
+    ```
 
 * 发送了无法转化的请求体，`400` 状态码
 
@@ -133,7 +141,7 @@ language-script-region-variant-extension-privateuse
     {"message": "Problems parsing JSON"}
     ```
 
-* 服务到期（比如淘宝的付费版店铺应用）， `403` 状态码
+* 服务到期（比如付费的增值服务等）， `403` 状态码
 
     ```http
     HTTP/1.1 403 Forbidden
@@ -142,7 +150,7 @@ language-script-region-variant-extension-privateuse
     {"message": "Service expired"}
     ```
 
-* 因为某些原因不允许访问（比如被封禁），`403` 状态码
+* 因为某些原因不允许访问（比如被 ban ），`403` 状态码
 
     ```http
     HTTP/1.1 403 Forbidden
@@ -207,13 +215,13 @@ language-script-region-variant-extension-privateuse
 
 部分接口需要通过某种身份验证方式才能请求成功（这些接口会在文档中标注出来），身份验证支持 [HTTP 基本认证](http://zh.wikipedia.org/wiki/HTTP%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%81)，也支持通过登录接口使用账号密码换取 token ，在请求接口时使用 `Authorization: token #{token}` 头标或者 `token` 参数的值的方式进行验证。
 
-## 超文本驱动和关联资源
+## 超文本驱动和资源发现
 
 REST 服务的要求之一，客户端不再需要将某些接口的 URI 硬编码在代码中，唯一需要存储的只是 API 的 HOST 地址，能够非常有效的降低客户端与服务端之间的耦合，服务端对 URI 的任何改动都不会影响到客户端的稳定。
 
 目前有两种方案备选：
 
-* [Web Linking](http://tools.ietf.org/html/rfc5988) ，示例可以参考上一小节**分页**。
+* [Web Linking](http://tools.ietf.org/html/rfc5988) ，示例可以参考*分页*一节。
 * [JSON HAL 草案](http://tools.ietf.org/html/draft-kelly-json-hal-05) ，示例可以参考 [JSON HAL 作者自己的介绍](http://stateless.co/hal_specification.html)
 
 提到 `Web Linking` 因为这类与资源无关的元信息不适合放在响应体中，提到 `JSON HAL` 是因为在很多时候一个资源会有一些关联资源，如： `post.user.name` ，在这类情况下 `user` 客户端在当前是无法知道资源的相关操作的，`JSON HAL` 在不具备方便的缓存工具的情况下比较好的规避了这个问题。
@@ -335,9 +343,9 @@ Status: 304 Not Modified
 
 ## User-Agent
 
-请求头中的 `User-Agent` 头标是 **必须** 且 **合法** 的，否则服务器会返回 `400` 状态码。
+请求头中的 `User-Agent` 头标是**必须**的，如果没有，则服务器会响应 `400` 状态码。
 
-具体格式：
+建议格式：
 
 * iOS
 
@@ -347,11 +355,13 @@ Status: 304 Not Modified
 
         Android/Android版本号 (设备型号; ROM版本号; 是否root<unrooted, rooted>; 网络类型; 语言) PackageName/版本号
 
+* Web 应用的 User-Agent 由浏览器设定
+
 示例：
 
-    User-Agent: iOS/6.1.2 (iPhone 5; jailbroken; Wi-Fi; zh_CN) com.gezbox.iphonecase/3.2 stenographer/...
+    User-Agent: iOS/6.1.2 (iPhone 5; jailbroken; Wi-Fi; zh-CN) com.bundle.id/3.2
 
-    User-Agent: Android/4.2 (MI-ONE Plus; MIUI-2.3.6f; unrooted; GPRS; zh_TW) com.gezbox.iphonecase/2.1 stenographer/...
+    User-Agent: Android/4.2 (MI-ONE Plus; MIUI-2.3.6f; unrooted; GPRS; zh-TW) com.bundle.id/2.1
 
 Android 的网络类型获取可以参考文档：[http://developer.android.com/reference/android/telephony/TelephonyManager.html](http://developer.android.com/reference/android/telephony/TelephonyManager.html)
 
@@ -367,8 +377,6 @@ Android 的网络类型获取可以参考文档：[http://developer.android.com/
 $ curl -i https://api.example.com -H "Origin: http://example.com"
 HTTP/1.1 302 Found
 ```
-
-在我方注册过的源访问接口示例：
 
 ```bash
 $ curl -i https://api.example.com -H "Origin: http://example.com"
