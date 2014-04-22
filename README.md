@@ -86,7 +86,8 @@ language-script-region-variant-extension-privateuse
 * [维基百科](http://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81)
 * [四个新的 HTTP 状态码](http://www.oschina.net/news/28660/new-http-status-codes)
 * [RFC2616](http://tools.ietf.org/html/rfc2616)
-* [RFC6585](http://tools.ietf.org/html/rfc6585)
+* [RFC6584](http://tools.ietf.org/html/rfc6585)
+* [Do I need to use http redirect code 302 or 307? - Stack Overflow](http://stackoverflow.com/questions/2467664/do-i-need-to-use-http-redirect-code-302-or-307)
 
 ### 请求成功
 
@@ -94,6 +95,15 @@ language-script-region-variant-extension-privateuse
 * 201 **Created** : 对象创建成功并返回相应资源数据，如 `POST` 成功；创建完成后响应头中应该携带头标 `Location` ，指向新建资源的地址
 * 202 **Accepted** : 更新成功并且返回相应资源数据，如 `PUT` ， `PATCH` 成功
 * 204 **No Content** : 请求执行成功，不返回相应资源数据，如 `PATCH` ， `DELETE` 成功
+
+### 重定向
+
+**重定向的新地址都需要在响应的 `Location` 头标中返回**
+
+* 301 **Moved Permanently** : 被请求的资源已永久移动到新位置
+* 302 **Found** : 请求的资源现在临时从不同的 URI 响应请求
+* 303 **See Other** : 对应当前请求的响应可以在另一个 URI 上被找到，客户端应该使用 `GET` 方法进行请求
+* 307 **Temporary Redirect** : 对应当前请求的响应可以在另一个 URI 上被找到，客户端应该保持原有的请求方法进行请求
 
 ### 客户端出错
 
