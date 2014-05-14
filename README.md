@@ -74,7 +74,7 @@ language-script-region-variant-extension-privateuse
 * `POST` 用于创建新资源
     * 创建完成后返回状态码 `201 Created`
 * `PATCH` 用于局部更新资源
-    * 完成请求后返回状态码 `200 OK`
+    * 完成请求后返回状态码 `202 Accepted`
     * 完成请求后需要返回被修改的资源详细信息
 * `PUT` 用于完整的替换资源或者创建指定身份的资源，比如创建 id 为 123 的某个资源
     * 如果是创建了资源，则返回 `201 Created`
