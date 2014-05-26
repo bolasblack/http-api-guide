@@ -339,20 +339,17 @@ HTTP/1.1 200 OK
 Cache-Control: private, max-age=60
 ETag: "644b5b0155e6404a9cc4bd9d8b1ae730"
 Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
-Status: 200 OK
 
 $ curl -i http://api.example.com/#{RESOURCE_URI} -H "If-Modified-Since: Thu, 05 Jul 2012 15:31:30 GMT"
 HTTP/1.1 304 Not Modified
 Cache-Control: private, max-age=60
 Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
-Status: 304 Not Modified
 
 $ curl -i http://api.example.com/#{RESOURCE_URI} -H 'If-None-Match: "644b5b0155e6404a9cc4bd9d8b1ae730"'
 HTTP/1.1 304 Not Modified
 Cache-Control: private, max-age=60
 ETag: "644b5b0155e6404a9cc4bd9d8b1ae730"
 Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
-Status: 304 Not Modified
 ```
 
 ## User-Agent
@@ -433,9 +430,7 @@ foo({
       {"href": "http://api.example.com/#{RESOURCE_URI}?cursor=200&count=100", "rel": "last"}
     ]
   },
-  "data"; {
-    // data
-  }
+  "data": // data
 })
 ```
 
