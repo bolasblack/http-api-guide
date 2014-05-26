@@ -90,7 +90,7 @@ language-script-region-variant-extension-privateuse
 * [维基百科](http://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81)
 * [四个新的 HTTP 状态码](http://www.oschina.net/news/28660/new-http-status-codes)
 * [RFC2616](http://tools.ietf.org/html/rfc2616)
-* [RFC6584](http://tools.ietf.org/html/rfc6585)
+* [RFC6585](http://tools.ietf.org/html/rfc6585)
 * [Do I need to use http redirect code 302 or 307? - Stack Overflow](http://stackoverflow.com/questions/2467664/do-i-need-to-use-http-redirect-code-302-or-307)
 
 ### 请求成功
