@@ -16,6 +16,7 @@
 * [数据缓存](#数据缓存)
 * [User-Agent](#user-agent)
 * [跨域](#跨域)
+* [更细节的接口设计指南](#更细节的接口设计指南)
 
 ## URL
 
@@ -447,4 +448,13 @@ foo({
   "data": // data
 })
 ```
+
+## 更细节的接口设计指南
+
+推荐参考文档 [HTTP API Design Guide](https://github.com/interagent/http-api-design/) ，我基本同意这个文档上的所有建议，除了以下两点：
+
+* [Use consistent path formats](https://github.com/interagent/http-api-design/#use-consistent-path-formats)
+    还是不建议将动作写在 URL 中，像文档中的情况，可以将这个行为抽象成一个事务资源 `POST /runs/:run_id/stop-logs` 或者 `POST /runs/:run_id/stoppers` 来解决
+* [Paginate with Ranges](https://github.com/interagent/http-api-design/#paginate-with-ranges)
+    确实是一个巧妙的设计，但似乎并不符合 `Content-Range` 的设计意图，而且有可能和需要使用到 `Content-Range` 的正常场景冲突（虽然几乎不可能），所以不推荐
 
