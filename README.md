@@ -360,7 +360,7 @@ Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
 
 * iOS
 
-        iOS/iOS版本号 (设备型号; 是否越狱<unjailbroken, jailbroken>; 网络类型<Wi-Fi, Cellular>; 语言) CFBundleIdentifier/CFBundleVersion
+        iOS/iOS版本号 (设备型号; 是否越狱<unjailbroken, jailbroken>; 网络类型<Wi-Fi, Cellular, Unknown>; 语言) CFBundleIdentifier/CFBundleVersion
 
 * Android
 
