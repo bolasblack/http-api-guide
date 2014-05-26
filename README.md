@@ -77,27 +77,26 @@ language-script-region-variant-extension-privateuse
     * 完成请求后需要返回被创建的资源详细信息
 * `PUT` 用于完整的替换资源或者创建指定身份的资源，比如创建 id 为 123 的某个资源
     * 如果是创建了资源，则返回 `201 Created`
-    * 如果是替换了资源，则返回 `202 Accepted`
+    * 如果是替换了资源，则返回 `200 OK`
     * 完成请求后需要返回被修改的资源详细信息
 * `PATCH` 用于局部更新资源
-    * 完成请求后返回状态码 `202 Accepted`
+    * 完成请求后返回状态码 `200 OK`
     * 完成请求后需要返回被修改的资源详细信息
 * `DELETE` 用于删除某个资源
     * 完成请求后返回状态码 `204 No Content`
 
 ## 状态码
 
-* [维基百科](http://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81)
-* [四个新的 HTTP 状态码](http://www.oschina.net/news/28660/new-http-status-codes)
-* [RFC2616](http://tools.ietf.org/html/rfc2616)
-* [RFC6585](http://tools.ietf.org/html/rfc6585)
+* [维基百科上的《 HTTP 状态码》词条](http://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81)
+* [RFC2616](http://tools.ietf.org/html/rfc2616) - HTTP 协议本体
+* [RFC5789](http://tools.ietf.org/html/rfc5789) - PATCH 方法的定义
+* [RFC6585](http://tools.ietf.org/html/rfc6585) - 新增的四个 HTTP 状态码，[中文版](http://www.oschina.net/news/28660/new-http-status-codes)
 * [Do I need to use http redirect code 302 or 307? - Stack Overflow](http://stackoverflow.com/questions/2467664/do-i-need-to-use-http-redirect-code-302-or-307)
 
 ### 请求成功
 
 * 200 **OK** : 请求执行成功并返回相应数据，如 `GET` 成功
 * 201 **Created** : 对象创建成功并返回相应资源数据，如 `POST` 成功；创建完成后响应头中应该携带头标 `Location` ，指向新建资源的地址
-* 202 **Accepted** : 更新成功并且返回相应资源数据，如 `PUT` ， `PATCH` 成功
 * 204 **No Content** : 请求执行成功，不返回相应资源数据，如 `PATCH` ， `DELETE` 成功
 
 ### 重定向
