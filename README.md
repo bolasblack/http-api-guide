@@ -1,4 +1,4 @@
-# API 接口设计指北
+# RESTful API 接口设计指南
 
 文档深受 [Github 接口文档](http://developer.github.com/v3/) 以及文中所有提及的协议、标准和文章的影响，因此在顶部注明，感谢。
 
