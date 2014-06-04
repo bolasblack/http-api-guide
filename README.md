@@ -105,9 +105,11 @@ language-script-region-variant-extension-privateuse
 
 * [维基百科上的《 HTTP 状态码》词条](http://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81)
 * [RFC2616](http://tools.ietf.org/html/rfc2616) - HTTP 协议本体
+* [RFC4918](http://tools.ietf.org/html/rfc4918) - 422 状态码的来源
 * [RFC5789](http://tools.ietf.org/html/rfc5789) - PATCH 方法的定义
 * [RFC6585](http://tools.ietf.org/html/rfc6585) - 新增的四个 HTTP 状态码，[中文版](http://www.oschina.net/news/28660/new-http-status-codes)
 * [Do I need to use http redirect code 302 or 307? - Stack Overflow](http://stackoverflow.com/questions/2467664/do-i-need-to-use-http-redirect-code-302-or-307)
+* [400 vs 422 response to POST of data](http://stackoverflow.com/questions/16133923/400-vs-422-response-to-post-of-data)
 
 ### 请求成功
 
@@ -451,7 +453,7 @@ foo({
 
 ## 更细节的接口设计指南
 
-推荐参考文档 [HTTP API Design Guide](https://github.com/interagent/http-api-design/) ，我基本同意这个文档上的所有建议，除了以下两点：
+推荐参考文档 [HTTP API Design Guide](https://github.com/interagent/http-api-design/) 来设计 REST 风格的 API ，我基本同意这个文档上的所有建议，除了以下两点：
 
 * [Use consistent path formats](https://github.com/interagent/http-api-design/#use-consistent-path-formats)
     还是不建议将动作写在 URL 中，像文档中的情况，可以将这个行为抽象成一个事务资源 `POST /runs/:run_id/stop-logs` 或者 `POST /runs/:run_id/stoppers` 来解决
