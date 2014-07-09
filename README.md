@@ -67,9 +67,19 @@ language-script-region-variant-extension-privateuse
 
 ### 时间格式
 
-时间格式遵循 [ISO 8601](http://zh.wikipedia.org/w/index.php?title=ISO_8601) 表示方法
+时间格式遵循 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 建议的格式：
 
-    YYYY-MM-DDTHH:MM:SSZ
+* 日期 `2014-07-09`
+* 时间 `14:31:22+0800`
+* 具体时间 `2007-11-06T16:34:41Z`
+* 持续时间 `P1Y3M5DT6H7M30S` （表示在一年三个月五天六小时七分三十秒内）
+* 时间区间 `2007-03-01T13:00:00Z/2008-05-11T15:30:00Z` 、 `2007-03-01T13:00:00Z/P1Y2M10DT2H30M` 、 `P1Y2M10DT2H30M/2008-05-11T15:30:00Z`
+* 重复时间 `R3/2004-05-06T13:00:00+08/P0Y6M5DT3H0M0S` （表示从2004年5月6日北京时间下午1点起，在半年零5天3小时内，重复3次）
+
+相关链接：
+
+* [What's the difference between ISO 8601 and RFC 3339 Date Formats?](http://stackoverflow.com/questions/522251/whats-the-difference-between-iso-8601-and-rfc-3339-date-formats)
+* [JSON风格指南 - Google 风格指南（中文版）](https://github.com/darcyliu/google-styleguide/blob/master/JSONStyleGuide.md#%E5%B1%9E%E6%80%A7%E5%80%BC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B)
 
 ## 请求方法
 
