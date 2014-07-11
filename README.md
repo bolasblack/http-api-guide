@@ -260,76 +260,12 @@ language-script-region-variant-extension-privateuse
 
 REST 服务的要求之一，客户端不再需要将某些接口的 URI 硬编码在代码中，唯一需要存储的只是 API 的 HOST 地址，能够非常有效的降低客户端与服务端之间的耦合，服务端对 URI 的任何改动都不会影响到客户端的稳定。
 
-目前有两种方案备选：
+目前只有两种方案差强人意：
 
-* [Web Linking](http://tools.ietf.org/html/rfc5988) ，示例可以参考*分页*一节。
 * [JSON HAL 草案](http://tools.ietf.org/html/draft-kelly-json-hal-05) ，示例可以参考 [JSON HAL 作者自己的介绍](http://stateless.co/hal_specification.html)
+* [GitHub API 使用的方案](https://developer.github.com/v3/#hypermedia) ，应该是一种 JSON HAL 的变体
 
-提到 `Web Linking` 因为这类与资源无关的元信息不适合放在响应体中，提到 `JSON HAL` 是因为在很多时候一个资源会有一些关联资源，如： `post.user.name` ，在这类情况下 `user` 客户端在当前是无法知道资源的相关操作的，`JSON HAL` 在不具备方便的缓存工具的情况下比较好的规避了这个问题。
-
-我赞同文章 《[Should RESTful API's Include Relationships](http://idbentley.com/blog/2013/03/14/should-restful-apis-include-relationships/)》 的说法并更加倾向于使用 `Web Linking` 。
-
-客户端缓存所有的请求，在需要知道某个关联资源的相关操作的时候使用 `HEAD` 方法，URL 的格式遵从 [URI Template](http://tools.ietf.org/html/rfc6570) 的语法：
-
-```http
-GET http://api.example.com/users/33221
-
-HTTP/1.1 200 OK
-Link: <http://api.example.com/users/33221>; rel="self",
-      <http://api.example.com/users/33221>; rel="edit",
-      <http://api.example.com/team{/team}>; rel="team_url",
-      <http://api.example.com/projects{/project}>; rel="project_url",
-      <http://api.example.com/users/{owner}/{repo}>; rel="repository_url"
-
-{
-  "id": 596502,
-  "name": "test user",
-  "projects": [160418896, 160418897, 160418898, 160418899],
-  "team": 94665
-}
-```
-
-然而客户端有可能处于没有缓存的的状态中，因此接口可以适当地支持文章 《[Best Practices for Designing a Pragmatic RESTful API](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)》 的 《[Auto loading related resource representations](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#autoloading)》 小节中提到的 `embed` 参数。
-
-不过个人觉得文中的实现方式成本太高而且意义不大，因此进行了简化：
-
-```http
-GET http://api.example.com/users/33221?embed=projects,team
-
-HTTP/1.1 200 OK
-Link: <http://api.example.com/users/33221>; rel="self",
-      <http://api.example.com/users/33221>; rel="edit",
-      <http://api.example.com/team{/team}>; rel="team_url",
-      <http://api.example.com/projects{/project}>; rel="project_url",
-      <http://api.example.com/users/{owner}/{repo}>; rel="repository_url"
-
-{
-  "id": 596502,
-  "name": "test user",
-  "projects": [{
-    "id": 160418896,
-    "name": "project1",
-    "description": "description of project1"
-  }, {
-    "id": 160418897,
-    "name": "project2",
-    "description": "description of project2"
-  }, {
-    "id": 160418898,
-    "name": "project3",
-    "description": "description of project3"
-  }, {
-    "id": 160418899,
-    "name": "project4",
-    "description": "description of project4"
-  }],
-  "team": {
-    "id": 94665,
-    "name": "my team",
-    "members": [596502, 596503, 596504, 596505, 596506]
-  }
-}
-```
+可以挑一个来借鉴和实现
 
 ## 分页
 
