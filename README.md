@@ -57,13 +57,13 @@ language-script-region-variant-extension-privateuse
 
 ### 时区
 
-客户端请求服务器时，如果对时间有特殊要求（如某段时间每天的统计信息），则可以参考 [IETF 相关草案](http://tools.ietf.org/html/draft-sharhalakis-httptz-05) 增加请求头 `Timezone: Asia/Shanghai` ，或者现在可能更常见的请求头（ GitHub 使用的） `Time-Zone: Asia/Shanghai` 。
+客户端请求服务器时，如果对时间有特殊要求（如某段时间每天的统计信息），则可以参考 [IETF 相关草案](http://tools.ietf.org/html/draft-sharhalakis-httptz-05) 增加请求头 `Timezone: Asia/Shanghai` 。
 
 时区的名称可以参考 [tz datebase](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) 。
 
-考虑到维护这样一份列表可能会产生一定的困扰，因此也可以使用请求头 `Time-Offset: +0800` 来替代（[来源](http://blogs.windwardreports.com/davidt/2010/04/can-we-please-get-a-time-zone-in-the-http-request-header.html?cid=6a0115711bf0ae970b01347fd28db8970c#comment-6a0115711bf0ae970b01347fd28db8970c-content)）
-
 如果客户端请求时没有指定相应的时区，则服务端默认使用 [UTC](http://zh.wikipedia.org/wiki/%E5%8D%8F%E8%B0%83%E4%B8%96%E7%95%8C%E6%97%B6) 时间返回相应数据。
+
+PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time)这种东西，所以不推荐客户端在请求时使用 Offset 。
 
 ### 时间格式
 
@@ -405,4 +405,3 @@ foo({
     还是不建议将动作写在 URL 中，像文档中的情况，可以将这个行为抽象成一个事务资源 `POST /runs/:run_id/stop-logs` 或者 `POST /runs/:run_id/stoppers` 来解决
 * [Paginate with Ranges](https://github.com/interagent/http-api-design/#paginate-with-ranges)
     确实是一个巧妙的设计，但似乎并不符合 `Content-Range` 的设计意图，而且有可能和需要使用到 `Content-Range` 的正常场景冲突（虽然几乎不可能），所以不推荐
-
