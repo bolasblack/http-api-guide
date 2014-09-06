@@ -254,7 +254,14 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 
 ## 身份验证
 
-部分接口需要通过某种身份验证方式才能请求成功（这些接口会在文档中标注出来），身份验证支持 [HTTP 基本认证](http://zh.wikipedia.org/wiki/HTTP%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%81)，也支持通过登录接口使用账号密码换取 token ，在请求接口时使用 `Authorization: token #{token}` 头标或者 `token` 参数的值的方式进行验证。
+部分接口需要通过某种身份验证方式才能请求成功（这些接口**应该**在文档中标注出来），身份验证支持两种方式：
+
+* 支持 [HTTP 基本认证](http://zh.wikipedia.org/wiki/HTTP%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%81)
+* 支持通过登录接口使用账号密码获取 JSON Web Token ，在请求接口时使用 `Authorization: Bearer #{token}` 头标或者 `token` 参数的值的方式进行验证。
+    * [JSON Web Token 规范](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-25)
+    * [Json Web Tokens: Introduction](http://angular-tips.com/blog/2014/05/json-web-tokens-introduction/)
+    * [Json Web Tokens: Examples](http://angular-tips.com/blog/2014/05/json-web-tokens-examples/)
+    * [Cookies vs Tokens. Getting auth right with Angular.JS](https://auth0.com/blog/2014/01/07/angularjs-authentication-with-cookies-vs-token/)
 
 ## 超文本驱动和资源发现
 
