@@ -59,7 +59,7 @@ language-script-region-variant-extension-privateuse
 
 客户端请求服务器时，如果对时间有特殊要求（如某段时间每天的统计信息），则可以参考 [IETF 相关草案](http://tools.ietf.org/html/draft-sharhalakis-httptz-05) 增加请求头 `Timezone: Asia/Shanghai` 。
 
-时区的名称可以参考 [tz datebase](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) 。
+时区的名称可以参考 [tz datebase](http://www.iana.org/time-zones)([Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)) 。
 
 如果客户端请求时没有指定相应的时区，则服务端默认使用 [UTC](http://zh.wikipedia.org/wiki/%E5%8D%8F%E8%B0%83%E4%B8%96%E7%95%8C%E6%97%B6) 时间返回相应数据。
 
