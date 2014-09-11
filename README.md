@@ -1,6 +1,8 @@
 # API 接口设计指北
 
-**这篇文章受了很多 [Github 接口文档](http://developer.github.com/v3/) 以及文中所有提及的协议、标准和文章的启发，因此在顶部注明并加以感谢。**
+* 文章主要目的是为设计接口骨架时提供建议
+* 内容会经常更新
+* **只是建议**
 
 ## 目录
 
@@ -137,7 +139,7 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 
 ### 重定向
 
-**重定向的新地址都需要在响应的 `Location` 头标中返回**
+**重定向的新地址都需要在响应头 `Location` 中返回**
 
 * 301 **Moved Permanently** : 被请求的资源已永久移动到新位置
 * 302 **Found** : 请求的资源现在临时从不同的 URI 响应请求
@@ -286,28 +288,33 @@ REST 服务的要求之一，客户端不再需要将某些接口的 URI 硬编�
 
 ## 分页
 
-请求某个资源集合时，可以通过指定 `count` 参数来指定每页的资源数量，通过 `page` 参数指定页码。
+请求某个资源集合时，可以通过指定 `count` 参数来指定每页的资源数量，通过 `page` 参数指定页码，或根据 `last_cursor` 参数指定上一页最后一个资源的标识符。
 
 如果没有传递 `count` 参数或者 `count` 参数的值为空，则使用默认值 20 ， `count` 参数的最大上限为 100 。
 
-分页的相关信息会包含在 [Link Header](http://tools.ietf.org/html/rfc5988) 和 `X-Resource-Count` 中。
+如何同时传递了 `last_cursor` 和 `page` 参数，则使用 `page` 。
 
-如果是第一页或者是最后一页时，不会返回 `prev` 和 `next` 的 Link 。
+分页的相关信息会包含在 [Link Header](http://tools.ietf.org/html/rfc5988) 和 `X-Total-Count` 中。
 
-更多 `rel` 相关信息，可以参阅 [RFC5988 6.2.2节](http://tools.ietf.org/html/rfc5988#section-6.2.2) 。
+如果是第一页或者是最后一页时，不会返回 `previous` 和 `next` 的 Link 。
 
 ```http
 HTTP/1.1 200 OK
-X-Resource-Count: 542
-Link: <http://api.example.com/#{RESOURCE_URI}?cursor=&count=100>; rel="first",
-      <http://api.example.com/#{RESOURCE_URI}?cursor=90&count=100>; rel="prev",
-      <http://api.example.com/#{RESOURCE_URI}?cursor=120&count=100>; rel="next",
-      <http://api.example.com/#{RESOURCE_URI}?cursor=200&count=100>; rel="last"
+X-Total-Count: 542
+Link: <http://api.example.com/#{RESOURCE_URI}?last_cursor=&count=100>; rel="first",
+      <http://api.example.com/#{RESOURCE_URI}?last_cursor=200&count=100>; rel="last"
+      <http://api.example.com/#{RESOURCE_URI}?last_cursor=90&count=100>; rel="previous",
+      <http://api.example.com/#{RESOURCE_URI}?last_cursor=120&count=100>; rel="next",
 
 [
   ...
 ]
 ```
+
+相关资料：
+
+* [RFC5005 第3节 《Paged Feeds》](http://tools.ietf.org/html/rfc5005#section-3)
+* [RFC5988 6.2.2节 《Initial Registry Contents》](http://tools.ietf.org/html/rfc5988#section-6.2.2)
 
 ## 数据缓存
 
@@ -363,7 +370,7 @@ HTTP/1.1 302 Found
 $ curl -i https://api.example.com -H "Origin: http://example.com"
 HTTP/1.1 302 Found
 Access-Control-Allow-Origin: *
-Access-Control-Expose-Headers: ETag, Link, X-Resource-Count
+Access-Control-Expose-Headers: ETag, Link, X-Total-Count
 Access-Control-Allow-Credentials: true
 ```
 
@@ -375,7 +382,7 @@ HTTP/1.1 302 Found
 Access-Control-Allow-Origin: *
 Access-Control-Allow-Headers: Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With
 Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE
-Access-Control-Expose-Headers: ETag, Link, X-Resource-Count
+Access-Control-Expose-Headers: ETag, Link, X-Total-Count
 Access-Control-Max-Age: 86400
 Access-Control-Allow-Credentials: true
 ```
@@ -392,7 +399,7 @@ $ curl http://api.example.com/#{RESOURCE_URI}?callback=foo
 foo({
   "meta": {
     "status": 200,
-    "X-Resource-Count": 542,
+    "X-Total-Count": 542,
     "Link": [
       {"href": "http://api.example.com/#{RESOURCE_URI}?cursor=0&count=100", "rel": "first"},
       {"href": "http://api.example.com/#{RESOURCE_URI}?cursor=90&count=100", "rel": "prev"},
@@ -406,12 +413,16 @@ foo({
 
 ## 更细节的接口设计指南
 
-推荐参考文档 [HTTP API Design Guide](https://github.com/interagent/http-api-design/) 来设计 REST 风格的 API ，我基本同意这个文档上的所有建议，除了以下两点：
+这里还有一些其他参考资料：
 
-* [Use consistent path formats](https://github.com/interagent/http-api-design/#use-consistent-path-formats)
-    还是不建议将动作写在 URL 中，像文档中的情况，可以将这个行为抽象成一个事务资源 `POST /runs/:run_id/stop-logs` 或者 `POST /runs/:run_id/stoppers` 来解决
-* [Paginate with Ranges](https://github.com/interagent/http-api-design/#paginate-with-ranges)
-    确实是一个巧妙的设计，但似乎并不符合 `Content-Range` 的设计意图，而且有可能和需要使用到 `Content-Range` 的正常场景冲突（虽然几乎不可能），所以不推荐
+* 推荐参考文档 [HTTP API Design Guide](https://github.com/interagent/http-api-design/) 来设计 REST 风格的 API ，我基本同意这个文档上的所有建议，除了以下两点：
+    * [Use consistent path formats](https://github.com/interagent/http-api-design/#use-consistent-path-formats)
+        还是不建议将动作写在 URL 中，像文档中的情况，可以将这个行为抽象成一个事务资源 `POST /runs/:run_id/stop-logs` 或者 `POST /runs/:run_id/stoppers` 来解决
+    * [Paginate with Ranges](https://github.com/interagent/http-api-design/#paginate-with-ranges)
+        确实是一个巧妙的设计，但似乎并不符合 `Content-Range` 的设计意图，而且有可能和需要使用到 `Content-Range` 的正常场景冲突（虽然几乎不可能），所以不推荐
+* [Best Practices for Designing a Pragmatic RESTful API](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
+* [Thoughts on RESTful API Design](http://restful-api-design.readthedocs.org/en/latest/)
+* [The RESTful CookBook](http://restcookbook.com/)
 
 [iso3166-1]: javascript:;
 [iso3166-1_wiki]: http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
