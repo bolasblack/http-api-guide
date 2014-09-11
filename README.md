@@ -15,7 +15,6 @@
 * [分页](#分页)
 * [数据缓存](#数据缓存)
 * [并发控制](#并发控制)
-* [User-Agent](#user-agent)
 * [跨域](#跨域)
 * [更细节的接口设计指南](#更细节的接口设计指南)
 
@@ -345,32 +344,6 @@ Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
 相关资料：
 
 * 《RESTful Web Services Cookbook 中文版》 10.4 节 《如何在服务器端实现条件 PUT 请求》
-
-## User-Agent
-
-请求头中的 `User-Agent` 头标可以帮助服务端收集设备信息，但这不是必须实现的。
-
-如果实现了如果没有，则服务器会响应 `400` 状态码。
-
-建议格式：
-
-* iOS
-
-        iOS/iOS版本号 (设备型号; 是否越狱<unjailbroken, jailbroken>; 网络类型<Wi-Fi, Cellular, Unknown>; 语言) CFBundleIdentifier/CFBundleVersion
-
-* Android
-
-        Android/Android版本号 (设备型号; ROM版本号; 是否root<unrooted, rooted>; 网络类型; 语言) PackageName/版本号
-
-* Web 应用的 User-Agent 由浏览器设定
-
-示例：
-
-    User-Agent: iOS/6.1.2 (iPhone 5; jailbroken; Wi-Fi; zh-CN) com.bundle.id/3.2
-
-    User-Agent: Android/4.2 (MI-ONE Plus; MIUI-2.3.6f; unrooted; GPRS; zh-TW) com.bundle.id/2.1
-
-Android 的网络类型获取可以参考文档：[http://developer.android.com/reference/android/telephony/TelephonyManager.html](http://developer.android.com/reference/android/telephony/TelephonyManager.html)
 
 ## 跨域
 
