@@ -147,15 +147,16 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 ### 客户端出错
 
 * 400 **Bad Request** : 请求体包含语法错误
-* 401 **Unauthorized** : 需要验证用户身份
+* 401 **Unauthorized** : 需要验证用户身份，如果服务器就算是身份验证后也不允许客户访问资源，应该响应 `403 Forbidden`
 * 403 **Forbidden** : 服务器拒绝执行
 * 404 **Not Found** : 找不到目标资源
-* 405 **Method Not Allowed** : 不允许执行目标行为
+* 405 **Method Not Allowed** : 不允许执行目标方法，响应中应该带有 `Allow` 头，内容为对该资源有效的 HTTP 方法
+* 406 **Not Acceptable** : 服务器不支持客户端请求的内容格式（比如客户端请求 JSON 格式的数据，但服务器只能提供 XML 格式的数据）
 * 409 **Conflict** : 被请求的资源的当前状态之间存在冲突
 * 410 **Gone** : 被请求的资源已被删除
 * 412 **Precondition Failed** : 服务器在验证在请求的头字段中给出先决条件时，没能满足其中的一个或多个。主要使用场景在于实现[并发控制](#并发控制)
-* 413 **Request Entity Too Large** : 请求实体过大
-* 415 **Unsupported Media Type** : 当前请求的方法和所请求的资源不支持请求中提交的实体的格式
+* 413 **Request Entity Too Large** : `POST` 或者 `PUT` 请求的消息实体过大
+* 415 **Unsupported Media Type** : 服务器不支持请求中提交的数据的格式
 * 422 **Unprocessable Entity** : 请求格式正确，但是由于含有语义错误，无法响应
 * 428 **Precondition Required** : 要求先决条件，如果想要请求能成功必须满足一些预设的条件
 
