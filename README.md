@@ -14,6 +14,7 @@
 * [超文本驱动和资源发现](#超文本驱动和资源发现)
 * [分页](#分页)
 * [数据缓存](#数据缓存)
+* [并发控制](#并发控制)
 * [User-Agent](#user-agent)
 * [跨域](#跨域)
 * [更细节的接口设计指南](#更细节的接口设计指南)
@@ -153,6 +154,7 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 * 405 **Method Not Allowed** : 不允许执行目标行为
 * 409 **Conflict** : 被请求的资源的当前状态之间存在冲突
 * 410 **Gone** : 被请求的资源已被删除
+* 412 **Precondition Failed** : 服务器在验证在请求的头字段中给出先决条件时，没能满足其中的一个或多个。主要使用场景在于实现[并发控制](#并发控制)
 * 413 **Request Entity Too Large** : 请求实体过大
 * 415 **Unsupported Media Type** : 当前请求的方法和所请求的资源不支持请求中提交的实体的格式
 * 422 **Unprocessable Entity** : 请求格式正确，但是由于含有语义错误，无法响应
@@ -309,7 +311,7 @@ Link: <http://api.example.com/#{RESOURCE_URI}?cursor=&count=100>; rel="first",
 
 ## 数据缓存
 
-大部分接口都会在响应头中携带 `Last-Modified` 和 `ETag` 信息，你可以在随后请求这些资源的时候，在请求头中使用 `If-Modified-Since` 或者 `If-None-Match` 两个头来确认资源是否经过修改。
+大部分接口应该在响应头中携带 `Last-Modified` 和 `ETag` 信息，客户端可以在随后请求这些资源的时候，在请求头中使用 `If-Modified-Since` 或者 `If-None-Match` 两个头来确认资源是否经过修改。
 
 ```bash
 $ curl -i http://api.example.com/#{RESOURCE_URI}
@@ -330,9 +332,25 @@ ETag: "644b5b0155e6404a9cc4bd9d8b1ae730"
 Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
 ```
 
+## 并发控制
+
+不严谨的实现，或者缺少并发控制的 `PUT` 和 `PATCH` 请求可能导致 “更新丢失”。这个时候可以使用 `Last-Modified` 和/或 `ETag` 头来实现条件请求，支持乐观并发控制。
+
+下文只考虑使用 `PUT` 和 `PATCH` 方法更新资源的情况。
+
+* 客户端发起的请求如果没有包含 `If-Unmodified-Since` 或者 `If-Match` 头，那就返回状态码 `403 Forbidden` ，在响应正文中解释为何返回该状态码
+* 客户端发起的请求提供的 `If-Unmodified-Since` 或者 `If-Match` 头与服务器记录的实际修改时间和 `ETag` 值不匹配的时候，返回状态码 `412 Precondition Failed`
+* 客户端发起的请求提供的条件符合实际值，那就更新资源，响应 `200 OK` 或者 `204 No Content` ，并且包含更新过的 `Last-Modified` 和/或 `ETag` 头，同时包含 `Content-Location` 头，其值为更新后的资源 URI
+
+相关资料：
+
+* 《RESTful Web Services Cookbook 中文版》 10.4 节 《如何在服务器端实现条件 PUT 请求》
+
 ## User-Agent
 
-请求头中的 `User-Agent` 头标是**必须**的，如果没有，则服务器会响应 `400` 状态码。
+请求头中的 `User-Agent` 头标可以帮助服务端收集设备信息，但这不是必须实现的。
+
+如果实现了如果没有，则服务器会响应 `400` 状态码。
 
 建议格式：
 
