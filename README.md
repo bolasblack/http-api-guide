@@ -1,6 +1,6 @@
 # API 接口设计指北
 
-文档深受 [Github 接口文档](http://developer.github.com/v3/) 以及文中所有提及的协议、标准和文章的影响，因此在顶部注明，感谢。
+**这篇文章受了很多 [Github 接口文档](http://developer.github.com/v3/) 以及文中所有提及的协议、标准和文章的启发，因此在顶部注明并加以感谢。**
 
 ## 目录
 
@@ -40,16 +40,16 @@ HOST 地址：
 language-script-region-variant-extension-privateuse
 ```
 
-1. language：这部分是 [ISO 639](http://www.loc.gov/standards/iso639-2/php/code_list.php) [wikipedia](http://zh.wikipedia.org/wiki/ISO_639-1) 规定的代码，比如中文是 zh。
+1. language：这部分是 [ISO 639](http://www.loc.gov/standards/iso639-2/php/code_list.php)([Wikipedia](http://zh.wikipedia.org/wiki/ISO_639-1)) 规定的代码，比如中文是 zh。
 2. script：表示变体，比如简体汉字是 zh-Hans ，繁体汉字是 zh-Hant 。
-3. region：是 [ISO 3166-1](javascript:;) [wikipedia](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) 规定的地理区域，比如 zh-Hans-CN 就是中国大陆使用的简体中文。
+3. region：是 [ISO 3166-1][iso3166-1]([Wikipedia][iso3166-1_wiki]) 规定的地理区域，比如 zh-Hans-CN 就是中国大陆使用的简体中文。
 4. variant：表示方言。
 5. extension：表示扩展。
 6. privateus：表示私有标识。
 
 **有一点需要注意，任何合法的标签都必须经过IANA的认证，已通过认证的标签可以在[这个网页](http://www.iana.org/assignments/language-subtag-registry)查到。此外，网上还有一个非官方的[标签搜索引擎](http://people.w3.org/rishida/utils/subtags/)。**
 
-相关链接：
+相关资料：
 
 * Android 文档：[http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier](http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier) ，顺便鄙视 iOS 文档在获取语言接口的相关文档里根本不提这个。
 * 《语种名称代码》：[http://www.ruanyifeng.com/blog/2008/02/codes_for_language_names.html](http://www.ruanyifeng.com/blog/2008/02/codes_for_language_names.html)
@@ -67,7 +67,7 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 
 ### 时间格式
 
-时间格式遵循 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 建议的格式：
+时间格式遵循 [ISO 8601](https://www.iso.org/obp/ui/#iso:std:iso:8601:ed-3:v1:en)([Wikipedia](https://en.wikipedia.org/wiki/ISO_8601)) 建议的格式：
 
 * 日期 `2014-07-09`
 * 时间 `14:31:22+0800`
@@ -76,10 +76,18 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 * 时间区间 `2007-03-01T13:00:00Z/2008-05-11T15:30:00Z` 、 `2007-03-01T13:00:00Z/P1Y2M10DT2H30M` 、 `P1Y2M10DT2H30M/2008-05-11T15:30:00Z`
 * 重复时间 `R3/2004-05-06T13:00:00+08/P0Y6M5DT3H0M0S` （表示从2004年5月6日北京时间下午1点起，在半年零5天3小时内，重复3次）
 
-相关链接：
+相关资料：
 
 * [What's the difference between ISO 8601 and RFC 3339 Date Formats?](http://stackoverflow.com/questions/522251/whats-the-difference-between-iso-8601-and-rfc-3339-date-formats)
 * [JSON风格指南 - Google 风格指南（中文版）](https://github.com/darcyliu/google-styleguide/blob/master/JSONStyleGuide.md#%E5%B1%9E%E6%80%A7%E5%80%BC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B)
+
+### 货币名称
+
+货币名称可以参考 [ISO 4217](javascript:;)([Wikipedia](http://en.wikipedia.org/wiki/ISO_4217)) 中的约定，标准为货币名称规定了三个字母的货币代码，其中的前两个字母是 [ISO 3166-1][iso3166-1]([Wikipedia][iso3166-1_wiki]) 中定义的双字母国家代码，第三个字母通常是货币的首字母。在货币上使用这些代码消除了货币名称（比如 dollar ）或符号（比如 $ ）的歧义。
+
+相关资料：
+
+* 《RESTful Web Services Cookbook 中文版》 3.9 节《如何在表述中使用可移植的数据格式》
 
 ## 请求方法
 
@@ -412,3 +420,6 @@ foo({
     还是不建议将动作写在 URL 中，像文档中的情况，可以将这个行为抽象成一个事务资源 `POST /runs/:run_id/stop-logs` 或者 `POST /runs/:run_id/stoppers` 来解决
 * [Paginate with Ranges](https://github.com/interagent/http-api-design/#paginate-with-ranges)
     确实是一个巧妙的设计，但似乎并不符合 `Content-Range` 的设计意图，而且有可能和需要使用到 `Content-Range` 的正常场景冲突（虽然几乎不可能），所以不推荐
+
+[iso3166-1]: javascript:;
+[iso3166-1_wiki]: http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
