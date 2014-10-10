@@ -279,12 +279,13 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 
 REST 服务的要求之一，客户端不再需要将某些接口的 URI 硬编码在代码中，唯一需要存储的只是 API 的 HOST 地址，能够非常有效的降低客户端与服务端之间的耦合，服务端对 URI 的任何改动都不会影响到客户端的稳定。
 
-目前只有两种方案差强人意：
+目前只有几种方案差强人意：
 
 * [JSON HAL 草案](http://tools.ietf.org/html/draft-kelly-json-hal-06) ，示例可以参考 [JSON HAL 作者自己的介绍](http://stateless.co/hal_specification.html)
 * [GitHub API 使用的方案](https://developer.github.com/v3/#hypermedia) ，应该是一种 JSON HAL 的变体
+* [JSON API 方案](http://jsonapi.org/) ，另外一种类似 JSON HAL 的方案，不过某些方面（比如甚至也考虑到了 URL ）考虑的比 JSON HAL 更为具体
 
-可以挑一个来借鉴和实现
+目前来看应该是合并 JSON API 和 JSON HAL 两个方案的做法，各取所长，能够得到一个相对理想的方案
 
 ## 分页
 
