@@ -281,7 +281,7 @@ REST 服务的要求之一，客户端不再需要将某些接口的 URI 硬编�
 
 目前只有两种方案差强人意：
 
-* [JSON HAL 草案](http://tools.ietf.org/html/draft-kelly-json-hal-05) ，示例可以参考 [JSON HAL 作者自己的介绍](http://stateless.co/hal_specification.html)
+* [JSON HAL 草案](http://tools.ietf.org/html/draft-kelly-json-hal-06) ，示例可以参考 [JSON HAL 作者自己的介绍](http://stateless.co/hal_specification.html)
 * [GitHub API 使用的方案](https://developer.github.com/v3/#hypermedia) ，应该是一种 JSON HAL 的变体
 
 可以挑一个来借鉴和实现
