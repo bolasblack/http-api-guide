@@ -353,6 +353,7 @@ Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
 相关资料：
 
 * 《RESTful Web Services Cookbook 中文版》 10.4 节 《如何在服务器端实现条件 PUT 请求》
+* [RFC 7232 "Conditional Requests"](https://tools.ietf.org/html/rfc7232)
 
 ## 跨域
 
@@ -416,6 +417,8 @@ foo({
 
 这里还有一些其他参考资料：
 
+* [RFC 7231 "Semantics and Content"](https://tools.ietf.org/html/rfc7231)
+* [Httpbis Status Pages](https://tools.ietf.org/wg/httpbis/)
 * 推荐参考文档 [HTTP API Design Guide](https://github.com/interagent/http-api-design/) 来设计 REST 风格的 API ，我基本同意这个文档上的所有建议，除了以下两点：
     * [Use consistent path formats](https://github.com/interagent/http-api-design/#use-consistent-path-formats)
         还是不建议将动作写在 URL 中，像文档中的情况，可以将这个行为抽象成一个事务资源 `POST /runs/:run_id/stop-logs` 或者 `POST /runs/:run_id/stoppers` 来解决
