@@ -7,6 +7,7 @@
 * [User-Agent](#user-agent)
 * [两步验证](#两步验证)
 * [同时操作多个资源](#同时操作多个资源)
+* [超文本驱动](#超文本驱动)
 
 ## User-Agent
 
@@ -119,4 +120,24 @@ Content-Type: application/json-patch+json
 
 ```http
 HTTP/1.1 204 No Content
+```
+
+## 超文本驱动
+
+想法受启发于 [JSON API 方案](http://jsonapi.org/)，很多做法基本照搬，主要是把 `links` 相关内容放到了请求头里。
+
+想法目前还不成熟，并不建议投入使用。
+
+```http
+HTTP/1.1 200 OK
+Link: <http://api.example.com/peoples/{posts.author}>; rel="res:author"; allow="collection,get",
+      <http://api.example.com/comments/{posts.comments}>; rel="res:comments"; allow="collection,create,get,delete",
+      <http://api.example.com/todos/order>; rel="res:order"; allow="get,put"
+
+[{
+  "id": "1",
+  "title": "Rails is Omakase",
+  "author": "9",
+  "comments": [ "5", "12", "17", "20" ]
+}]
 ```
