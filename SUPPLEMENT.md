@@ -6,6 +6,7 @@
 
 * [User-Agent](#user-agent)
 * [两步验证](#两步验证)
+* [同时操作多个资源](#同时操作多个资源)
 
 ## User-Agent
 
@@ -37,3 +38,85 @@ Android 的网络类型获取可以参考文档：[http://developer.android.com/
 
 * 这里是一份 TOTP 协议中密码生成算法的简单说明：[http://jacob.jkrall.net/totp/](http://jacob.jkrall.net/totp/)
 * [What are the advantages of TOTP over HOTP?](http://crypto.stackexchange.com/questions/2220/what-are-the-advantages-of-totp-over-hotp)
+
+## 同时操作多个资源
+
+### 创建多个相同的资源
+
+请求：
+
+```http
+POST /resources HTTP/1.1
+
+[{
+  "id": "1 也允许由客户端直接指定 ID ，比如 UUID",
+  "name": "resource1",
+  "property": "a"
+}, {
+  "name": "resource2",
+  "property": "b"
+}, {
+  "name": "resource3",
+  "property": "c"
+}]
+```
+
+响应：
+
+```http
+HTTP/1.1 201 Created
+Location: /resources/1,2,3
+
+[{
+  "id": "1",
+  "name": "resource1",
+  "property": "a"
+}, {
+  "id": "2",
+  "name": "resource2",
+  "property": "b"
+}, {
+  "id": "3",
+  "name": "resource3",
+  "property": "c"
+}]
+```
+
+### 删除多个相同的资源
+
+```http
+// 请求
+DELETE /resources/1,2,3 HTTP/1.1
+
+// 响应
+HTTP/1.1 204 No Content
+```
+
+### 修改多个相同的资源
+
+请求：
+
+```http
+PATCH /resources/1,2,3 HTTP/1.1
+
+Content-Type: application/json
+{
+  "property": "d"
+}
+
+// 也可以使用 JSON Patch
+Content-Type: application/json-patch+json
+{
+  "op": "replace",
+  "replace": "/property",
+  "value": "d"
+}
+```
+
+请求实体可以直接写一个 JSON 进行修改，也可以发送一个 [JSON Patch](http://tools.ietf.org/html/rfc6902) 进行修改。
+
+响应：
+
+```http
+HTTP/1.1 204 No Content
+```
