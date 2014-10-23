@@ -154,7 +154,7 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 * 404 **Not Found** : 找不到目标资源
 * 405 **Method Not Allowed** : 不允许执行目标方法，响应中应该带有 `Allow` 头，内容为对该资源有效的 HTTP 方法
 * 406 **Not Acceptable** : 服务器不支持客户端请求的内容格式（比如客户端请求 JSON 格式的数据，但服务器只能提供 XML 格式的数据）
-* 409 **Conflict** : 被请求的资源的当前状态之间存在冲突
+* 409 **Conflict** : 请求操作和资源的当前状态存在冲突
 * 410 **Gone** : 被请求的资源已被删除
 * 412 **Precondition Failed** : 服务器在验证在请求的头字段中给出先决条件时，没能满足其中的一个或多个。主要使用场景在于实现[并发控制](#并发控制)
 * 413 **Request Entity Too Large** : `POST` 或者 `PUT` 请求的消息实体过大
