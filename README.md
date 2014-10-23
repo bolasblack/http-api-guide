@@ -283,7 +283,7 @@ REST 服务的要求之一，客户端不再需要将某些接口的 URI 硬编�
 
 * [JSON HAL 草案](http://tools.ietf.org/html/draft-kelly-json-hal-06) ，示例可以参考 [JSON HAL 作者自己的介绍](http://stateless.co/hal_specification.html)
 * [GitHub API 使用的方案](https://developer.github.com/v3/#hypermedia) ，应该是一种 JSON HAL 的变体
-* [JSON API 方案](http://jsonapi.org/) ，另外一种类似 JSON HAL 的方案，不过某些方面（比如甚至也考虑到了 URL ）考虑的比 JSON HAL 更为具体
+* [JSON API 方案](http://jsonapi.org/)  （这里有 [@迷渡](https://github.com/justjavac) 发起的 [中文版](http://jsonapi.org.cn/) ），另外一种类似 JSON HAL 的方案，不过某些方面（比如甚至也考虑到了 URL ）考虑的比 JSON HAL 更为具体
 
 目前来看应该是合并 JSON API 和 JSON HAL 两个方案的做法，各取所长，能够得到一个相对理想的方案
 
