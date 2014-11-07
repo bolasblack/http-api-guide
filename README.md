@@ -1,8 +1,8 @@
 # HTTP 接口设计指北
 
-* 文章主要目的是为设计接口骨架时提供建议
-* 内容会经常更新
-* **只是建议**
+* 文档主要目的是为设计接口时提供建议，使大家不必重复造 HTTP 协议已经完成的轮子
+* **只是建议，不是必须遵从的要求**
+* 大家有什么问题想法或者建议欢迎 [创建 Issue](https://github.com/bolasblack/http-api-guide/issues/new) 或者 [提交 Pull Request](https://github.com/bolasblack/http-api-guide/compare/)
 
 ## 目录
 
