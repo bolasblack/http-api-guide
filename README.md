@@ -6,6 +6,7 @@
 
 ## 目录
 
+* [HTTP/1.1 协议](#HTTP/1.1 协议)
 * [URL](#url)
 * [空字段](#空字段)
 * [国际化](#国际化)
@@ -19,6 +20,21 @@
 * [并发控制](#并发控制)
 * [跨域](#跨域)
 * [更细节的接口设计指南](#更细节的接口设计指南)
+
+## HTTP/1.1 协议
+
+2014 年 6 月的时候 IETF 已经正式的废弃了 [RFC2616](http://tools.ietf.org/html/rfc2616) ，将它拆分为六个单独的协议说明，并重点对原来语义模糊的部分进行了解释：
+
+* RFC7230 - HTTP/1.1: [Message Syntax and Routing](http://tools.ietf.org/html/rfc7230) - low-level message parsing and connection management
+* RFC7231 - HTTP/1.1: [Semantics and Content](http://tools.ietf.org/html/rfc7231) - methods, status codes and headers
+* RFC7232 - HTTP/1.1: [Conditional Requests](http://tools.ietf.org/html/rfc7232) - e.g., If-Modified-Since
+* RFC7233 - HTTP/1.1: [Range Requests](http://tools.ietf.org/html/rfc7233) - getting partial content
+* RFC7234 - HTTP/1.1: [Caching](http://tools.ietf.org/html/rfc7234) - browser and intermediary caches
+* RFC7235 - HTTP/1.1: [Authentication](http://tools.ietf.org/html/rfc7235) - a framework for HTTP authentication
+
+相关资料：
+
+* [RFC2616 is Dead](https://www.mnot.net/blog/2014/06/07/rfc2616_is_dead) （[中文版](http://www.infoq.com/cn/news/2014/06/http-11-updated)）
 
 ## URL
 
@@ -94,7 +110,6 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 ## 请求方法
 
 * [维基百科](http://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE#.E8.AF.B7.E6.B1.82.E6.96.B9.E6.B3.95)
-* [RFC2616](http://tools.ietf.org/html/rfc2616)
 * 如果请求头中存在 `X-HTTP-Method-Override` 或参数中存在 `_method`（拥有更高权重），且值为 `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `OPTION`, `HEAD` 之一，则视作相应的请求方式进行处理
 * `GET`, `DELETE`, `HEAD` 方法，参数风格为标准的 `GET` 风格的参数，如 `url?a=1&b=2`
 * `POST`, `PUT`, `PATCH`, `OPTION` 方法
@@ -124,7 +139,6 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 ## 状态码
 
 * [维基百科上的《 HTTP 状态码》词条](http://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81)
-* [RFC2616](http://tools.ietf.org/html/rfc2616) - HTTP 协议本体
 * [RFC4918](http://tools.ietf.org/html/rfc4918) - 422 状态码的来源
 * [RFC5789](http://tools.ietf.org/html/rfc5789) - PATCH 方法的定义
 * [RFC6585](http://tools.ietf.org/html/rfc6585) - 新增的四个 HTTP 状态码，[中文版](http://www.oschina.net/news/28660/new-http-status-codes)
@@ -417,7 +431,6 @@ foo({
 
 这里还有一些其他参考资料：
 
-* [RFC 7231 "Semantics and Content"](https://tools.ietf.org/html/rfc7231)
 * [Httpbis Status Pages](https://tools.ietf.org/wg/httpbis/)
 * 推荐参考文档 [HTTP API Design Guide](https://github.com/interagent/http-api-design/) 来设计 REST 风格的 API ，我基本同意这个文档上的所有建议，除了以下两点：
     * [Use consistent path formats](https://github.com/interagent/http-api-design/#use-consistent-path-formats)
