@@ -6,20 +6,20 @@
 
 ## 目录
 
-* [HTTP/1.1 协议](#HTTP/1.1 协议)
-* [URL](#url)
-* [空字段](#空字段)
-* [国际化](#国际化)
-* [请求方法](#请求方法)
-* [状态码](#状态码)
-* [错误处理](#错误处理)
-* [身份验证](#身份验证)
-* [超文本驱动和资源发现](#超文本驱动和资源发现)
-* [分页](#分页)
-* [数据缓存](#数据缓存)
-* [并发控制](#并发控制)
-* [跨域](#跨域)
-* [更细节的接口设计指南](#更细节的接口设计指南)
+* [HTTP/1.1 协议](#user-content-http11-协议)
+* [URL](#user-content-url)
+* [空字段](#user-content-空字段)
+* [国际化](#user-content-国际化)
+* [请求方法](#user-content-请求方法)
+* [状态码](#user-content-状态码)
+* [错误处理](#user-content-错误处理)
+* [身份验证](#user-content-身份验证)
+* [超文本驱动和资源发现](#user-content-超文本驱动和资源发现)
+* [分页](#user-content-分页)
+* [数据缓存](#user-content-数据缓存)
+* [并发控制](#user-content-并发控制)
+* [跨域](#user-content-跨域)
+* [更细节的接口设计指南](#user-content-更细节的接口设计指南)
 
 ## HTTP/1.1 协议
 
@@ -188,7 +188,7 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 * 406 **Not Acceptable** : 服务器不支持客户端请求的内容格式（比如客户端请求 JSON 格式的数据，但服务器只能提供 XML 格式的数据）
 * 409 **Conflict** : 请求操作和资源的当前状态存在冲突
 * 410 **Gone** : 被请求的资源已被删除
-* 412 **Precondition Failed** : 服务器在验证在请求的头字段中给出先决条件时，没能满足其中的一个或多个。主要使用场景在于实现[并发控制](#并发控制)
+* 412 **Precondition Failed** : 服务器在验证在请求的头字段中给出先决条件时，没能满足其中的一个或多个。主要使用场景在于实现[并发控制](#user-content-并发控制)
 * 413 **Request Entity Too Large** : `POST` 或者 `PUT` 请求的消息实体过大
 * 415 **Unsupported Media Type** : 服务器不支持请求中提交的数据的格式
 * 422 **Unprocessable Entity** : 请求格式正确，但是由于含有语义错误，无法响应
