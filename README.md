@@ -87,7 +87,13 @@ language-extlang-script-region-variant-extension-privateuse
 
 ### 时区
 
-客户端请求服务器时，如果对时间有特殊要求（如某段时间每天的统计信息），则可以参考 [IETF 相关草案](http://tools.ietf.org/html/draft-sharhalakis-httptz-05) 增加请求头 `Timezone: Asia/Shanghai` 。
+客户端请求服务器时，如果对时间有特殊要求（如某段时间每天的统计信息），则可以参考 [IETF 相关草案](http://tools.ietf.org/html/draft-sharhalakis-httptz-05) 增加请求头 `Timezone` 。
+
+```
+Timezone: 2007-06-12T23:48:22+0800
+// OR
+Timezone: 1977-07-30T12:00:11+0200;;Europe/Athens
+```
 
 时区的名称可以参考 [tz datebase](http://www.iana.org/time-zones)([Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)) 。
 
