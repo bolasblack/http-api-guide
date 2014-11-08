@@ -23,14 +23,14 @@
 
 ## HTTP/1.1 协议
 
-2014 年 6 月的时候 IETF 已经正式的废弃了 [RFC2616](http://tools.ietf.org/html/rfc2616) ，将它拆分为六个单独的协议说明，并重点对原来语义模糊的部分进行了解释：
+2014 年 6 月的时候 IETF 已经正式的废弃了 [RFC 2616](http://tools.ietf.org/html/rfc2616) ，将它拆分为六个单独的协议说明，并重点对原来语义模糊的部分进行了解释：
 
-* RFC7230 - HTTP/1.1: [Message Syntax and Routing](http://tools.ietf.org/html/rfc7230) - low-level message parsing and connection management
-* RFC7231 - HTTP/1.1: [Semantics and Content](http://tools.ietf.org/html/rfc7231) - methods, status codes and headers
-* RFC7232 - HTTP/1.1: [Conditional Requests](http://tools.ietf.org/html/rfc7232) - e.g., If-Modified-Since
-* RFC7233 - HTTP/1.1: [Range Requests](http://tools.ietf.org/html/rfc7233) - getting partial content
-* RFC7234 - HTTP/1.1: [Caching](http://tools.ietf.org/html/rfc7234) - browser and intermediary caches
-* RFC7235 - HTTP/1.1: [Authentication](http://tools.ietf.org/html/rfc7235) - a framework for HTTP authentication
+* RFC 7230 - HTTP/1.1: [Message Syntax and Routing](http://tools.ietf.org/html/rfc7230) - low-level message parsing and connection management
+* RFC 7231 - HTTP/1.1: [Semantics and Content](http://tools.ietf.org/html/rfc7231) - methods, status codes and headers
+* RFC 7232 - HTTP/1.1: [Conditional Requests](http://tools.ietf.org/html/rfc7232) - e.g., If-Modified-Since
+* RFC 7233 - HTTP/1.1: [Range Requests](http://tools.ietf.org/html/rfc7233) - getting partial content
+* RFC 7234 - HTTP/1.1: [Caching](http://tools.ietf.org/html/rfc7234) - browser and intermediary caches
+* RFC 7235 - HTTP/1.1: [Authentication](http://tools.ietf.org/html/rfc7235) - a framework for HTTP authentication
 
 相关资料：
 
@@ -42,7 +42,7 @@ HOST 地址：
 
     http://api.example.com
 
-所有 URI 都需要遵循 [RFC3986](http://tools.ietf.org/html/rfc3986) 的要求。
+所有 URI 都需要遵循 [RFC 3986](http://tools.ietf.org/html/rfc3986) 的要求。
 
 ## 空字段
 
@@ -151,9 +151,9 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 ## 状态码
 
 * [维基百科上的《 HTTP 状态码》词条](http://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81)
-* [RFC4918](http://tools.ietf.org/html/rfc4918) - 422 状态码的来源
-* [RFC5789](http://tools.ietf.org/html/rfc5789) - PATCH 方法的定义
-* [RFC6585](http://tools.ietf.org/html/rfc6585) - 新增的四个 HTTP 状态码，[中文版](http://www.oschina.net/news/28660/new-http-status-codes)
+* [RFC 4918](http://tools.ietf.org/html/rfc4918) - 422 状态码的来源
+* [RFC 5789](http://tools.ietf.org/html/rfc5789) - PATCH 方法的定义
+* [RFC 6585](http://tools.ietf.org/html/rfc6585) - 新增的四个 HTTP 状态码，[中文版](http://www.oschina.net/news/28660/new-http-status-codes)
 * [Do I need to use http redirect code 302 or 307? - Stack Overflow](http://stackoverflow.com/questions/2467664/do-i-need-to-use-http-redirect-code-302-or-307)
 * [400 vs 422 response to POST of data](http://stackoverflow.com/questions/16133923/400-vs-422-response-to-post-of-data)
 
@@ -340,8 +340,8 @@ Link: <http://api.example.com/#{RESOURCE_URI}?last_cursor=&count=100>; rel="firs
 
 相关资料：
 
-* [RFC5005 第3节 《Paged Feeds》](http://tools.ietf.org/html/rfc5005#section-3)
-* [RFC5988 6.2.2节 《Initial Registry Contents》](http://tools.ietf.org/html/rfc5988#section-6.2.2)
+* [RFC 5005 第3节 _Paged Feeds_](http://tools.ietf.org/html/rfc5005#section-3)
+* [RFC 5988 6.2.2节 _Initial Registry Contents_](http://tools.ietf.org/html/rfc5988#section-6.2.2)
 
 ## 数据缓存
 
