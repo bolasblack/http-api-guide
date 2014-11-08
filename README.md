@@ -50,28 +50,40 @@ HOST 地址：
 
 ## 国际化
 
-### 语言名称
+### 语言标签
 
-[RFC 5646](http://tools.ietf.org/html/rfc5646) 规定的语言的标签的格式如下：
+[RFC 5646](http://tools.ietf.org/html/rfc5646) ([BCP 47](http://tools.ietf.org/html/bcp47)) 规定的语言标签的格式如下：
 
 ```
-language-script-region-variant-extension-privateuse
+language-extlang-script-region-variant-extension-privateuse
 ```
 
-1. language：这部分是 [ISO 639](http://www.loc.gov/standards/iso639-2/php/code_list.php)([Wikipedia](http://zh.wikipedia.org/wiki/ISO_639-1)) 规定的代码，比如中文是 zh。
-2. script：表示变体，比如简体汉字是 zh-Hans ，繁体汉字是 zh-Hant 。
-3. region：是 [ISO 3166-1][iso3166-1]([Wikipedia][iso3166-1_wiki]) 规定的地理区域，比如 zh-Hans-CN 就是中国大陆使用的简体中文。
-4. variant：表示方言。
-5. extension：表示扩展。
-6. privateus：表示私有标识。
+1. `language`：这部分使用的是 ISO 639-1, ISO 639-2, ISO 639-3, ISO 639-5 中定义的代码，优先使用 ISO 639 第一部分中定义的两个字母的代码，找不到的话才使用其他部分中三个字母的代码，比如中文是 `zh` 。
+2. `extlang`: 这部分使用的是 ISO 639-3 中定义的方言代码，比如普通话是 `zh-cmn` ，粤语是 `zh-yue` ，吴语是 `zh-wuu` 。
+3. `script`: 这部分使用的是 [ISO 15924](http://www.unicode.org/iso15924/codelists.html) ([Wikipedia](http://zh.wikipedia.org/wiki/ISO_15924)) 中定义的语言代码，比如简体汉字是 `zh-Hans` ，繁体汉字是 `zh-Hant` 。
+4. `region`: 这部分使用的是 [ISO 3166-1][iso3166-1] ([Wikipedia][iso3166-1_wiki]) 中定义的地理区域代码，比如 `zh-Hans-CN` 就是中国大陆使用的简体中文。
+5. `variant`: 用来表示 `extlang` 的定义里没有包含的方言，具体的使用方法可以参考 [RFC 5646](http://tools.ietf.org/html/rfc5646#section-2.2.5) 。
+6. `extension`: 用来为自己的应用做一些语言上的额外的扩展，具体的使用方法可以参考 [RFC 5646](http://tools.ietf.org/html/rfc5646#section-2.2.6) 。
+7. `privateuse`: 用来表示私有协议中约定的一些语言上的区别，具体的使用方法可以参考 [RFC 5646](http://tools.ietf.org/html/rfc5646#section-2.2.7) 。
 
-**有一点需要注意，任何合法的标签都必须经过IANA的认证，已通过认证的标签可以在[这个网页](http://www.iana.org/assignments/language-subtag-registry)查到。此外，网上还有一个非官方的[标签搜索引擎](http://people.w3.org/rishida/utils/subtags/)。**
+其中只有 `language` 部分是必须的，其他部分都是可选的；不过为了便于编写程序，建议设计接口时约定语言标签的结构，比如统一使用 `language-script-region` 的形式（ `zh-Hans-CN`, `zh-Hant-HK` 等等）。
+
+语言标签是大小写不敏感的，但按照惯例，建议 `script` 部分首字母大写， `region` 部分全部大写，其余部分全部小写。
+
+**有一点需要注意，任何合法的标签都必须经过 IANA 的认证，已通过认证的标签可以在[这个网页](http://www.iana.org/assignments/language-subtag-registry)查到。此外，网上还有一个非官方的[标签搜索引擎](http://people.w3.org/rishida/utils/subtags/)。**
 
 相关资料：
 
-* Android 文档：[http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier](http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier) ，顺便鄙视 iOS 文档在获取语言接口的相关文档里根本不提这个。
-* 《语种名称代码》：[http://www.ruanyifeng.com/blog/2008/02/codes_for_language_names.html](http://www.ruanyifeng.com/blog/2008/02/codes_for_language_names.html)
-* 《Language tags in HTML and XML》：[http://www.w3.org/International/articles/language-tags/](http://www.w3.org/International/articles/language-tags/)
+* ISO 639-1 Code List ([Wikipedia](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes))
+* [ISO 639-2 Code List](http://www.loc.gov/standards/iso639-2/php/code_list.php) ([Wikipedia](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes))
+* [ISO 639-3 Macrolanguage Mappings](http://www-01.sil.org/iso639-3/macrolanguages.asp) ([Wikipedia](https://en.wikipedia.org/wiki/ISO_639_macrolanguage))
+* [ISO 639-5 Code List](http://www.loc.gov/standards/iso639-5/id.php) ([Wikipedia](https://en.wikipedia.org/wiki/List_of_ISO_639-5_codes))
+* [网页头部的声明应该是用 lang="zh" 还是 lang="zh-cn"？ - 知乎](http://www.zhihu.com/question/20797118)
+* [IETF language tag - Wikipedia](https://en.wikipedia.org/wiki/IETF_language_tag)
+* [Android 文档](http://developer.android.com/guide/topics/resources/providing-resources.html#LocaleQualifier) ，顺便鄙视 iOS 文档在获取语言接口的相关文档里根本不提这个
+* [语种名称代码](http://www.ruanyifeng.com/blog/2008/02/codes_for_language_names.html) ：文中对带有方言（ `extlang` ）部分的标签介绍有误
+* [Language tags in HTML and XML](http://www.w3.org/International/articles/language-tags/)
+* [Choosing a Language Tag](http://www.w3.org/International/questions/qa-choosing-language-tags)
 
 ### 时区
 
