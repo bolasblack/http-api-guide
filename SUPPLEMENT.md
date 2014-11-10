@@ -4,10 +4,32 @@
 
 ## 目录
 
-* [User-Agent](#user-agent)
-* [两步验证](#两步验证)
-* [同时操作多个资源](#同时操作多个资源)
-* [超文本驱动](#超文本驱动)
+* [扩充巴科斯范式](#user-content-扩充巴科斯范式-abnf)
+* [User-Agent](#user-content-user-agent)
+* [两步验证](#user-content-两步验证)
+* [同时操作多个资源](#user-content-同时操作多个资源)
+* [超文本驱动](#user-content-超文本驱动)
+
+## 扩充巴科斯范式 (ABNF)
+
+这算是阅读规范的预备知识吧，但写在 README 里还是太占空间了，所以写在了这里。
+
+规范里类似：
+
+```abnf
+header-field   = field-name ":" OWS field-value OWS
+
+field-name     = token
+field-value    = *( field-content / obs-fold )
+field-content  = field-vchar [ 1*( SP / HTAB ) field-vchar ]
+field-vchar    = VCHAR / obs-text
+
+obs-fold       = CRLF 1*( SP / HTAB )
+               ; obsolete line folding
+               ; see Section 3.2.4
+```
+
+格式的内容叫做“扩充巴科斯范式”，是由 [RFC 5234](http://tools.ietf.org/html/rfc5234) ([Wikipedia](http://zh.wikipedia.org/wiki/%E6%89%A9%E5%85%85%E5%B7%B4%E7%A7%91%E6%96%AF%E8%8C%83%E5%BC%8F)) 定义用以描述一些内容的详细格式的定义语言。
 
 ## User-Agent
 
