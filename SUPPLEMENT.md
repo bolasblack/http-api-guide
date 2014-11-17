@@ -33,7 +33,7 @@ obs-fold       = CRLF 1*( SP / HTAB )
 
 ## User-Agent
 
-请求头中的 `User-Agent` 可以帮助服务端收集设备信息，建议格式：
+请求头中的 `User-Agent` 可以帮助服务端收集设备信息，但格式需要遵循 [RFC 7231](http://tools.ietf.org/html/rfc7231#section-5.5.3) 中的定义，下文是一些建议格式：
 
 * iOS
 
