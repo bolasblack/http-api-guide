@@ -19,6 +19,7 @@
 * [数据缓存](#user-content-数据缓存)
 * [并发控制](#user-content-并发控制)
 * [跨域](#user-content-跨域)
+* [其他资料](#user-content-其他资料)
 * [更细节的接口设计指南](#user-content-更细节的接口设计指南)
 
 ## HTTP 协议
@@ -466,12 +467,16 @@ foo({
 })
 ```
 
+## 其他资料
+
+* [Httpbis Status Pages](https://tools.ietf.org/wg/httpbis/)
+* [所有在 IANA 注册的消息头和相关标准的列表](http://www.iana.org/assignments/message-headers/message-headers.xhtml)
+
 ## 更细节的接口设计指南
 
 这里还有一些其他参考资料：
 
-* [Httpbis Status Pages](https://tools.ietf.org/wg/httpbis/)
-* 推荐参考文档 [HTTP API Design Guide](https://github.com/interagent/http-api-design/) 来设计 REST 风格的 API ，我基本同意这个文档上的所有建议，除了以下两点：
+* 推荐参考文档 [HTTP API Design Guide](https://github.com/interagent/http-api-design/) 来设计 REST 风格的 API ，只有以下两点我个人并不建议参考：
     * [Use consistent path formats](https://github.com/interagent/http-api-design/#use-consistent-path-formats)
         还是不建议将动作写在 URL 中，像文档中的情况，可以将这个行为抽象成一个事务资源 `POST /runs/:run_id/stop-logs` 或者 `POST /runs/:run_id/stoppers` 来解决
     * [Paginate with Ranges](https://github.com/interagent/http-api-design/#paginate-with-ranges)
