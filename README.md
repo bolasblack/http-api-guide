@@ -6,7 +6,7 @@
 
 ## 目录
 
-* [HTTP/1.1 协议](#user-content-http11-协议)
+* [HTTP 协议](#user-content-http-协议)
 * [URL](#user-content-url)
 * [空字段](#user-content-空字段)
 * [国际化](#user-content-国际化)
@@ -21,7 +21,9 @@
 * [跨域](#user-content-跨域)
 * [更细节的接口设计指南](#user-content-更细节的接口设计指南)
 
-## HTTP/1.1 协议
+## HTTP 协议
+
+### HTTP/1.1
 
 2014 年 6 月的时候 IETF 已经正式的废弃了 [RFC 2616](http://tools.ietf.org/html/rfc2616) ，将它拆分为六个单独的协议说明，并重点对原来语义模糊的部分进行了解释：
 
@@ -35,6 +37,17 @@
 相关资料：
 
 * [RFC2616 is Dead](https://www.mnot.net/blog/2014/06/07/rfc2616_is_dead) （[中文版](http://www.infoq.com/cn/news/2014/06/http-11-updated)）
+
+### HTTP/2
+
+HTTP 协议的 2.0 版本还没有正式发布，但目前已经基本稳定下来了。
+
+[2.0 版本的设计目标是尽量在使用层面上保持与 1.1 版本的兼容，所以，虽然数据交换的格式发生了变化，但语义基本全部被保留下来了](http://http2.github.io/http2-spec/index.html#rfc.section.8)。
+
+因此，作为使用者而言，我们并不需要为了支持 2.0 而大幅修改代码。
+
+* [HTTP/2 latest draft](http://http2.github.io/http2-spec/index.html)
+* [HTTP/1.1 和 HTTP/2 数据格式的对比](http://http2.github.io/http2-spec/index.html#rfc.section.8.1.3)
 
 ## URL
 
