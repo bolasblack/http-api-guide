@@ -48,6 +48,7 @@ HTTP 协议的 2.0 版本还没有正式发布，但目前已经基本稳定下�
 因此，作为使用者而言，我们并不需要为了支持 2.0 而大幅修改代码。
 
 * [HTTP/2 latest draft](http://http2.github.io/http2-spec/index.html)
+* [HTTP/2 草案的中文版](https://github.com/fex-team/http2-spec/blob/master/HTTP2%E4%B8%AD%E8%8B%B1%E5%AF%B9%E7%85%A7%E7%89%88(06-29).md)
 * [HTTP/1.1 和 HTTP/2 数据格式的对比](http://http2.github.io/http2-spec/index.html#rfc.section.8.1.3)
 
 ## URL
