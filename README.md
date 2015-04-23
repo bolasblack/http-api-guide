@@ -147,7 +147,6 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 
 ## 请求方法
 
-* [维基百科](http://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE#.E8.AF.B7.E6.B1.82.E6.96.B9.E6.B3.95)
 * 如果请求头中存在 `X-HTTP-Method-Override` 或参数中存在 `_method`（拥有更高权重），且值为 `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `OPTION`, `HEAD` 之一，则视作相应的请求方式进行处理
 * `GET`, `DELETE`, `HEAD` 方法，参数风格为标准的 `GET` 风格的参数，如 `url?a=1&b=2`
 * `POST`, `PUT`, `PATCH`, `OPTION` 方法
@@ -174,19 +173,19 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 * `DELETE` 用于删除某个资源
     * 完成请求后返回状态码 `204 No Content`
 
-## 状态码
+相关资料：
 
-* [维基百科上的《 HTTP 状态码》词条](http://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81)
-* [RFC 4918](http://tools.ietf.org/html/rfc4918) - 422 状态码的来源
+* [RFC 7231 中对请求方法的定义](http://tools.ietf.org/html/rfc7231#section-4.3)
 * [RFC 5789](http://tools.ietf.org/html/rfc5789) - PATCH 方法的定义
-* [RFC 6585](http://tools.ietf.org/html/rfc6585) - 新增的四个 HTTP 状态码，[中文版](http://www.oschina.net/news/28660/new-http-status-codes)
-* [Do I need to use http redirect code 302 or 307? - Stack Overflow](http://stackoverflow.com/questions/2467664/do-i-need-to-use-http-redirect-code-302-or-307)
-* [400 vs 422 response to POST of data](http://stackoverflow.com/questions/16133923/400-vs-422-response-to-post-of-data)
+* [维基百科](http://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE#.E8.AF.B7.E6.B1.82.E6.96.B9.E6.B3.95)
+
+## 状态码
 
 ### 请求成功
 
 * 200 **OK** : 请求执行成功并返回相应数据，如 `GET` 成功
 * 201 **Created** : 对象创建成功并返回相应资源数据，如 `POST` 成功；创建完成后响应头中应该携带头标 `Location` ，指向新建资源的地址
+* 202 **Accepted** : 接受请求，但无法立即完成创建行为，比如其中涉及到一个需要花费若干小时才能完成的任务。返回的实体中应该包含当前状态的信息，以及指向处理状态监视器或状态预测的指针，以便客户端能够获取最新状态。
 * 204 **No Content** : 请求执行成功，不返回相应资源数据，如 `PATCH` ， `DELETE` 成功
 
 ### 重定向
@@ -198,23 +197,27 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 * 303 **See Other** : 对应当前请求的响应可以在另一个 URI 上被找到，客户端应该使用 `GET` 方法进行请求
 * 307 **Temporary Redirect** : 对应当前请求的响应可以在另一个 URI 上被找到，客户端应该保持原有的请求方法进行请求
 
-### 客户端出错
+### 条件请求
+
+* 304 **Not Modified** : 资源自从上次请求后没有再次发生变化，主要使用场景在于实现[数据缓存](#user-content-数据缓存)
+* 409 **Conflict** : 请求操作和资源的当前状态存在冲突。主要使用场景在于实现[并发控制](#user-content-并发控制)
+* 412 **Precondition Failed** : 服务器在验证在请求的头字段中给出先决条件时，没能满足其中的一个或多个。主要使用场景在于实现[并发控制](#user-content-并发控制)
+
+### 客户端错误
 
 * 400 **Bad Request** : 请求体包含语法错误
 * 401 **Unauthorized** : 需要验证用户身份，如果服务器就算是身份验证后也不允许客户访问资源，应该响应 `403 Forbidden`
 * 403 **Forbidden** : 服务器拒绝执行
 * 404 **Not Found** : 找不到目标资源
 * 405 **Method Not Allowed** : 不允许执行目标方法，响应中应该带有 `Allow` 头，内容为对该资源有效的 HTTP 方法
-* 406 **Not Acceptable** : 服务器不支持客户端请求的内容格式（比如客户端请求 JSON 格式的数据，但服务器只能提供 XML 格式的数据）
-* 409 **Conflict** : 请求操作和资源的当前状态存在冲突
-* 410 **Gone** : 被请求的资源已被删除
-* 412 **Precondition Failed** : 服务器在验证在请求的头字段中给出先决条件时，没能满足其中的一个或多个。主要使用场景在于实现[并发控制](#user-content-并发控制)
-* 413 **Request Entity Too Large** : `POST` 或者 `PUT` 请求的消息实体过大
+* 406 **Not Acceptable** : 服务器不支持客户端请求的内容格式，但响应里会包含服务端能够给出的格式的数据，并在 `Content-Type` 中声明格式名称
+* 410 **Gone** : 被请求的资源已被删除，只有在确定了这种情况是永久性的时候才可以使用，否则建议使用 `404 Not Found`
+* 413 **Payload Too Large** : `POST` 或者 `PUT` 请求的消息实体过大
 * 415 **Unsupported Media Type** : 服务器不支持请求中提交的数据的格式
 * 422 **Unprocessable Entity** : 请求格式正确，但是由于含有语义错误，无法响应
 * 428 **Precondition Required** : 要求先决条件，如果想要请求能成功必须满足一些预设的条件
 
-### 服务端出错
+### 服务端错误
 
 * 500 **Internal Server Error** : 服务器遇到了一个未曾预料的状况，导致了它无法完成对请求的处理。
 * 501 **Not Implemented** : 服务器不支持当前请求所需要的某个功能。
@@ -222,6 +225,15 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 * 503 **Service Unavailable** : 由于临时的服务器维护或者过载，服务器当前无法处理请求。这个状况是临时的，并且将在一段时间以后恢复。如果能够预计延迟时间，那么响应中可以包含一个 `Retry-After` 头用以标明这个延迟时间（内容可以为数字，单位为秒；或者是一个 [HTTP 协议指定的时间格式](http://tools.ietf.org/html/rfc2616#section-3.3)）。如果没有给出这个 `Retry-After` 信息，那么客户端应当以处理 500 响应的方式处理它。
 
 `501` 与 `405` 的区别是：`405` 是表示服务端不允许客户端这么做，`501` 是表示客户端或许可以这么做，但服务端还没有实现这个功能
+
+相关资料：
+
+* [RFC 里的状态码列表](http://tools.ietf.org/html/rfc7231#page-49)
+* [RFC 4918](http://tools.ietf.org/html/rfc4918) - 422 状态码的定义
+* [RFC 6585](http://tools.ietf.org/html/rfc6585) - 新增的四个 HTTP 状态码，[中文版](http://www.oschina.net/news/28660/new-http-status-codes)
+* [维基百科上的《 HTTP 状态码》词条](http://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81)
+* [Do I need to use http redirect code 302 or 307? - Stack Overflow](http://stackoverflow.com/questions/2467664/do-i-need-to-use-http-redirect-code-302-or-307)
+* [400 vs 422 response to POST of data](http://stackoverflow.com/questions/16133923/400-vs-422-response-to-post-of-data)
 
 ## 错误处理
 
@@ -373,26 +385,48 @@ Link: <http://api.example.com/#{RESOURCE_URI}?last_cursor=&count=100>; rel="firs
 
 ## 数据缓存
 
-大部分接口应该在响应头中携带 `Last-Modified` 和 `ETag` 信息，客户端可以在随后请求这些资源的时候，在请求头中使用 `If-Modified-Since` 或者 `If-None-Match` 两个头来确认资源是否经过修改。
+大部分接口应该在响应头中携带 `Last-Modified`, `ETag`, `Vary`, `Date` 信息，客户端可以在随后请求这些资源的时候，在请求头中使用 `If-Modified-Since`, `If-None-Match` 等请求头来确认资源是否经过修改。
+
+如果资源没有进行过修改，那么就可以响应 `304 Not Modified` 并且不在响应实体中返回任何内容。
 
 ```bash
 $ curl -i http://api.example.com/#{RESOURCE_URI}
 HTTP/1.1 200 OK
-Cache-Control: private, max-age=60
+Cache-Control: public, max-age=60
+Date: Thu, 05 Jul 2012 15:31:30 GMT
+Vary: Accept, Authorization
 ETag: "644b5b0155e6404a9cc4bd9d8b1ae730"
 Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
 
+Content
+```
+
+```bash
 $ curl -i http://api.example.com/#{RESOURCE_URI} -H "If-Modified-Since: Thu, 05 Jul 2012 15:31:30 GMT"
 HTTP/1.1 304 Not Modified
-Cache-Control: private, max-age=60
+Cache-Control: public, max-age=60
+Date: Thu, 05 Jul 2012 15:31:45 GMT
+Vary: Accept, Authorization
 Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
+```
 
+```bash
 $ curl -i http://api.example.com/#{RESOURCE_URI} -H 'If-None-Match: "644b5b0155e6404a9cc4bd9d8b1ae730"'
 HTTP/1.1 304 Not Modified
-Cache-Control: private, max-age=60
+Cache-Control: public, max-age=60
+Date: Thu, 05 Jul 2012 15:31:55 GMT
+Vary: Accept, Authorization
 ETag: "644b5b0155e6404a9cc4bd9d8b1ae730"
 Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
 ```
+
+相关资料：
+
+* [RFC 7232](http://tools.ietf.org/html/rfc7232)
+* [HTTP 缓存 - Google Developers](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching?hl=zh-cn)
+* [RFC 2616 中缓存过期时间的算法](http://tools.ietf.org/html/rfc2616#section-13.2.3), [MDN 版](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching_FAQ), [中文版](http://blog.csdn.net/woxueliuyun/article/details/41077671)
+* [HTTP 协议中 Vary 的一些研究](https://www.imququ.com/post/vary-header-in-http.html)
+* [Cache Control 與 ETag](https://blog.othree.net/log/2012/12/22/cache-control-and-etag/)
 
 ## 并发控制
 
