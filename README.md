@@ -436,13 +436,15 @@ Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
 下文只考虑使用 `PUT` 和 `PATCH` 方法更新资源的情况。
 
 * 客户端发起的请求如果没有包含 `If-Unmodified-Since` 或者 `If-Match` 头，那就返回状态码 `403 Forbidden` ，在响应正文中解释为何返回该状态码
-* 客户端发起的请求提供的 `If-Unmodified-Since` 或者 `If-Match` 头与服务器记录的实际修改时间和 `ETag` 值不匹配的时候，返回状态码 `412 Precondition Failed`
+* 客户端发起的请求提供的 `If-Unmodified-Since` 或者 `If-Match` 头与服务器记录的实际修改时间或 `ETag` 值不匹配的时候，返回状态码 `412 Precondition Failed`
+* 客户端发起的请求提供的 `If-Unmodified-Since` 或者 `If-Match` 头与服务器记录的实际修改时间或 `ETag` 的历史值匹配，但资源已经被修改过的时候，返回状态码 `409 Conflict`
 * 客户端发起的请求提供的条件符合实际值，那就更新资源，响应 `200 OK` 或者 `204 No Content` ，并且包含更新过的 `Last-Modified` 和/或 `ETag` 头，同时包含 `Content-Location` 头，其值为更新后的资源 URI
 
 相关资料：
 
 * 《RESTful Web Services Cookbook 中文版》 10.4 节 《如何在服务器端实现条件 PUT 请求》
 * [RFC 7232 "Conditional Requests"](https://tools.ietf.org/html/rfc7232)
+* [Location vs. Content-Location](https://www.subbu.org/blog/2008/10/location-vs-content-location)
 
 ## 跨域
 
