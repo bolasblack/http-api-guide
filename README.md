@@ -344,15 +344,16 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 
 ## 超文本驱动和资源发现
 
-REST 服务的要求之一，客户端不再需要将某些接口的 URI 硬编码在代码中，唯一需要存储的只是 API 的 HOST 地址，能够非常有效的降低客户端与服务端之间的耦合，服务端对 URI 的任何改动都不会影响到客户端的稳定。
+REST 服务的要求之一就是[超文本驱动](http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven)，客户端不再需要将某些接口的 URI 硬编码在代码中，唯一需要存储的只是 API 的 HOST 地址，能够非常有效的降低客户端与服务端之间的耦合，服务端对 URI 的任何改动都不会影响到客户端的稳定。
 
-目前只有几种方案差强人意：
+目前有几种方案试图实现这个效果：
 
-* [JSON HAL 草案](http://tools.ietf.org/html/draft-kelly-json-hal-06) ，示例可以参考 [JSON HAL 作者自己的介绍](http://stateless.co/hal_specification.html)
+* [JSON HAL](http://tools.ietf.org/html/draft-kelly-json-hal-07) ，示例可以参考 [JSON HAL 作者自己的介绍](http://stateless.co/hal_specification.html)
 * [GitHub API 使用的方案](https://developer.github.com/v3/#hypermedia) ，应该是一种 JSON HAL 的变体
-* [JSON API 方案](http://jsonapi.org/)  （这里有 [@迷渡](https://github.com/justjavac) 发起的 [中文版](http://jsonapi.org.cn/) ），另外一种类似 JSON HAL 的方案，不过某些方面（比如甚至也考虑到了 URL ）考虑的比 JSON HAL 更为具体
+* [JSON API](http://jsonapi.org/) ，（这里有 [@迷渡](https://github.com/justjavac) 发起的 [中文版](http://jsonapi.org.cn/) ），另外一种类似 JSON HAL 的方案
+* [Micro API](http://micro-api.org/) ，一种试图与 [JSON-LD](http://json-ld.org/) 兼容的方案
 
-目前来看应该是合并 JSON API 和 JSON HAL 两个方案的做法，各取所长，能够得到一个相对理想的方案
+目前所知的方案都实现了发现资源的功能，服务端同时需要实现 `OPTIONS` 方法，并在响应中携带 `Allow` 头来告知客户端当前拥有的操作权限。
 
 ## 分页
 
