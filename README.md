@@ -316,7 +316,7 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
         {
           "resource": "Issue",
           "field": "title",
-          "code": "missing_field"
+          "code": "required"
         }
       ]
     }
@@ -324,9 +324,9 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 
 所有的 `error` 哈希表都有 `resource`, `field`, `code` 字段，以便于定位错误，`code` 字段则用于表示错误类型：
 
-* `missing`: 说明某个字段的值代表的资源不存在
 * `invalid`: 某个字段的值非法，接口文档中会提供相应的信息
-* `missing_field`: 缺失某个必须的字段
+* `required`: 缺失某个必须的字段
+* `not_exist`: 说明某个字段的值代表的资源不存在
 * `already_exist`: 发送的资源中的某个字段的值和服务器中已有的某个资源冲突，常见于某些值全局唯一的字段，比如 @ 用的用户名（这个错误我有纠结，因为其实有 409 状态码可以表示，但是在修改某个资源时，很一般显然请求中不止是一种错误，如果是 409 的话，多种错误的场景就不合适了）
 
 ## 身份验证
