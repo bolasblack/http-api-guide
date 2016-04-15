@@ -361,7 +361,7 @@ REST 服务的要求之一就是[超文本驱动](http://roy.gbiv.com/untangled/
 
 如果没有传递 `count` 参数或者 `count` 参数的值为空，则使用默认值 20 ， `count` 参数的最大上限为 100 。
 
-如何同时传递了 `last_cursor` 和 `page` 参数，则使用 `page` 。
+如果同时传递了 `last_cursor` 和 `page` 参数，则使用 `page` 。
 
 分页的相关信息会包含在 [Link Header](http://tools.ietf.org/html/rfc5988) 和 `X-Total-Count` 中。
 
