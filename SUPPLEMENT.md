@@ -153,15 +153,17 @@ HTTP/1.1 204 No Content
 
 ## 超文本驱动
 
-想法受启发于 [JSON API 方案](http://jsonapi.org/)，很多做法基本照搬，主要是把 `links` 相关内容放到了请求头里。
+想法受启发于 [JSON API 方案](http://jsonapi.org/)，做法基本照搬，主要是把 `links` 相关内容放到了响应头里。
 
-想法目前还不成熟，并不建议投入使用。
+可以添加 `schema` 参数链接到目标数据的结构描述文档，比如 [JSON Schema](http://json-schema.org/) 、 [Schema.org](http://schema.org/) 等。
+
+想法目前还不成熟，不建议投入使用。
 
 ```http
 HTTP/1.1 200 OK
-Link: <http://api.example.com/peoples/{posts.author}>; rel="res:author"; allow="collection,get",
-      <http://api.example.com/comments/{posts.comments}>; rel="res:comments"; allow="collection,create,get,delete",
-      <http://api.example.com/todos/order>; rel="res:order"; allow="get,put"
+Link: <http://api.example.com/peoples/{posts.author}>; rel="url-template:author"; allow="COLLECTION,GET"; schema="...",
+      <http://api.example.com/comments/{posts.comments}>; rel="url-template:comments"; allow="COLLECTION,CREATE,GET,DELETE"; schema="...",
+      <http://api.example.com/todos/order>; rel="url-template:order"; allow="GET,PUT"; schema="..."
 
 [{
   "id": "1",
