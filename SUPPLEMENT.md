@@ -6,6 +6,7 @@
 
 * [扩充巴科斯范式](#user-content-扩充巴科斯范式-abnf)
 * [User-Agent](#user-content-user-agent)
+* [WWW-Authenticate 头](#user-content-www-authenticate-头)
 * [两步验证](#user-content-两步验证)
 * [同时操作多个资源](#user-content-同时操作多个资源)
 * [超文本驱动](#user-content-超文本驱动)
@@ -53,9 +54,15 @@ obs-fold       = CRLF 1*( SP / HTAB )
 
 Android 的网络类型获取可以参考文档：[http://developer.android.com/reference/android/telephony/TelephonyManager.html](http://developer.android.com/reference/android/telephony/TelephonyManager.html)
 
+## WWW-Authenticate 头
+
+如果是自定义的身份验证方式，比如要求请求时带上请求头 `Authentication: Token <token>`，那么一般在 token 验证失败返回 `401` 的 `WWW-Authenticate` 头可以是 `WWW-Authenticate: Token` ，当然也可以带上任意其他自定义信息。客户端在发现自己无法识别的信息时应该略过。
+
 ## 两步验证
 
 如果只是打算简单实现，建议使用 [TOTP](http://tools.ietf.org/html/rfc6238)([Wikipedia](http://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm)) 协议，可以兼容 [Google Authenticator](https://code.google.com/p/google-authenticator/) 。
+
+关于如何在 API 中实现对两步验证的支持，可以参考 [GitHub 的文档](https://developer.github.com/v3/auth/#working-with-two-factor-authentication)。
 
 相关资料：
 
