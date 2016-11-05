@@ -356,23 +356,22 @@ REST 服务的要求之一就是[超文本驱动](http://roy.gbiv.com/untangled/
 
 ## 分页
 
-请求某个资源集合时，可以通过指定 `count` 参数来指定每页的资源数量，通过 `page` 参数指定页码，或根据 `last_cursor` 参数指定上一页最后一个资源的标识符。
+请求某个资源集合时，可以通过指定 `count` 参数来指定每页的资源数量，通过 `page` 参数指定页码，或根据需求使用 `last_cursor` 参数指定上一页最后一个资源的标识符替代 `page` 参数。
 
-如果没有传递 `count` 参数或者 `count` 参数的值为空，则使用默认值 20 ， `count` 参数的最大上限为 100 。
+如果没有传递 `count` 参数或者 `count` 参数的值为空，则使用默认值，建议在设计时设置一个最大值。
 
-如果同时传递了 `last_cursor` 和 `page` 参数，则使用 `page` 。
+分页的相关信息可以包含在 [Link Header](http://tools.ietf.org/html/rfc5988) 和 `X-Pagination-Info` 中（ HTTP 头的语法格式可以参考 [ABNF List Extension: #rule](https://tools.ietf.org/html/rfc7230#section-7) ）。
 
-分页的相关信息会包含在 [Link Header](http://tools.ietf.org/html/rfc5988) 和 `X-Total-Count` 中。
-
-如果是第一页或者是最后一页时，不会返回 `previous` 和 `next` 的 Link 。
+如果是第一页或者是最后一页时，不返回 `previous` 和 `next` 的 Link 。
 
 ```http
 HTTP/1.1 200 OK
-X-Total-Count: 542
+X-Pagination-Info: count="542"
 Link: <http://api.example.com/#{RESOURCE_URI}?last_cursor=&count=100>; rel="first",
-      <http://api.example.com/#{RESOURCE_URI}?last_cursor=200&count=100>; rel="last"
+      <http://api.example.com/#{RESOURCE_URI}?last_cursor=200&count=100>; rel="last",
       <http://api.example.com/#{RESOURCE_URI}?last_cursor=90&count=100>; rel="previous",
       <http://api.example.com/#{RESOURCE_URI}?last_cursor=120&count=100>; rel="next",
+      <http://api.example.com/#{RESOURCE_URI}?last_cursor={last_cursor}&count={count}>; rel="url-template:pagination"
 
 [
   ...
