@@ -333,14 +333,13 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 
 部分接口需要通过某种身份验证方式才能请求成功（这些接口**应该**在文档中标注出来），合适的身份验证解决方案目前有两种：
 
-* [HTTP 基本认证](http://zh.wikipedia.org/wiki/HTTP%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%81)，**只有在部署了 SSL 证书的情况下才可以使用，否则用户密码会有暴露的风险，当然，最好不要使用**
-* [JSON Web Token](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-25) ，支持通过登录接口使用账号密码获取，在请求接口时使用 `Authorization: Bearer #{token}` 头标或者 `token` 参数的值的方式进行验证。
-    * [Json Web Tokens: Introduction](http://angular-tips.com/blog/2014/05/json-web-tokens-introduction/)
-    * [Json Web Tokens: Examples](http://angular-tips.com/blog/2014/05/json-web-tokens-examples/)
-    * [Cookies vs Tokens. Getting auth right with Angular.JS](https://auth0.com/blog/2014/01/07/angularjs-authentication-with-cookies-vs-token/)
+* [HTTP 基本认证](http://zh.wikipedia.org/wiki/HTTP%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%81)，**最好只在部署了 SSL 证书的情况下才可以使用，否则用户密码会有暴露的风险**
 * [OAuth 2.0](https://tools.ietf.org/html/rfc6749)
     * [官网](http://oauth.net/2/)
     * [理解OAuth 2.0 - 阮一峰](http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html) 以及对[文中 `state` 参数的介绍的修正](http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html#comment-323002)
+    * [JSON Web Token](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-25) ，一种 Token 的生成标准
+        * [Json Web Tokens: Introduction](http://angular-tips.com/blog/2014/05/json-web-tokens-introduction/)
+        * [Json Web Tokens: Examples](http://angular-tips.com/blog/2014/05/json-web-tokens-examples/)
 
 ## 超文本驱动和资源发现
 
