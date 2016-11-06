@@ -219,7 +219,7 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 ### 客户端错误
 
 * 400 **Bad Request** : 请求体包含语法错误
-* 401 **Unauthorized** : 需要验证用户身份，如果服务器就算是身份验证后也不允许客户访问资源，应该响应 `403 Forbidden` ，同时需要返回一个 [`WWW-Authenticate`](https://tools.ietf.org/html/rfc7235#section-4.1) 头
+* 401 **Unauthorized** : 需要验证用户身份，如果服务器就算是身份验证后也不允许客户访问资源，应该响应 `403 Forbidden` 。如果请求里有 `Authorization` 头，那么必须返回一个 [`WWW-Authenticate`](https://tools.ietf.org/html/rfc7235#section-4.1) 头
 * 403 **Forbidden** : 服务器拒绝执行
 * 404 **Not Found** : 找不到目标资源
 * 405 **Method Not Allowed** : 不允许执行目标方法，响应中应该带有 `Allow` 头，内容为对该资源有效的 HTTP 方法
