@@ -111,16 +111,28 @@ language-script-region-variant-extension-privateuse
 客户端请求服务器时，如果对时间有特殊要求（如某段时间每天的统计信息），则可以参考 [IETF 相关草案](http://tools.ietf.org/html/draft-sharhalakis-httptz-05) 增加请求头 `Timezone` 。
 
 ```
-Timezone: 2007-06-12T23:48:22+0800
-// OR
-Timezone: 1977-07-30T12:00:11+0200;;Europe/Athens
+Timezone: 2016-11-06 23:55:52+08:00;;Asia/Shanghai
 ```
 
-时区的名称可以参考 [tz datebase](http://www.iana.org/time-zones)([Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)) 。
+具体格式说明：
 
-如果客户端请求时没有指定相应的时区，则服务端默认使用 [UTC](http://zh.wikipedia.org/wiki/%E5%8D%8F%E8%B0%83%E4%B8%96%E7%95%8C%E6%97%B6) 时间返回相应数据。
+```
+Timezone: RFC3339 约定的时间格式;POSIX 1003.1 约定的时区字符串;tz datebase 里的时区名称
+```
+
+客户端最好提供所有字段，如果没有办法提供，则应该使用空字符串
+
+如果客户端请求时没有指定相应的时区，则服务端默认使用最后一次已知时区或者 [UTC](http://zh.wikipedia.org/wiki/%E5%8D%8F%E8%B0%83%E4%B8%96%E7%95%8C%E6%97%B6) 时间返回相应数据。
 
 PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time)这种东西，所以不推荐客户端在请求时使用 Offset 。
+
+相关资料：
+
+* [RFC3339](https://tools.ietf.org/html/rfc3339)
+* [tz datebase](http://www.iana.org/time-zones) ([Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones))
+* POSIX 1003.1 时区字符串的说明文档
+    * [GNU 的文档](https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html)
+    * [IBM 的文章](https://www.ibm.com/developerworks/aix/library/au-aix-posix/)
 
 ### 时间格式
 
