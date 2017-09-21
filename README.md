@@ -535,3 +535,9 @@ foo({
 
 [iso3166-1]: javascript:;
 [iso3166-1_wiki]: http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
+## 广告
+
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/xBTqaWL4SaeZJWJuGUqHHfyf/bolasblack/http-api-guide'>
+  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/xBTqaWL4SaeZJWJuGUqHHfyf/bolasblack/http-api-guide.svg' />
+</a>
