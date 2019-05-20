@@ -10,6 +10,8 @@
 * [两步验证](#user-content-两步验证)
 * [同时操作多个资源](#user-content-同时操作多个资源)
 * [超文本驱动](#user-content-超文本驱动)
+* [错误处理](#user-content-错误处理)
+* [分页](#user-content-分页)
 
 ## 扩充巴科斯范式 (ABNF)
 
@@ -172,3 +174,134 @@ Link: <http://api.example.com/peoples/{posts.author}>; rel="url-template:author"
   "comments": [ "5", "12", "17", "20" ]
 }]
 ```
+
+## 错误处理
+
+在调用接口的过程中，可能出现下列几种错误情况：
+
+* 服务器维护中，`503` 状态码
+
+    ```http
+    HTTP/1.1 503 Service Unavailable
+    Retry-After: 3600
+    Content-Length: 41
+
+    {"message": "Service In the maintenance"}
+    ```
+
+* 发送了无法转化的请求体，`400` 状态码
+
+    ```http
+    HTTP/1.1 400 Bad Request
+    Content-Length: 35
+
+    {"message": "Problems parsing JSON"}
+    ```
+
+* 服务到期（比如付费的增值服务等）， `403` 状态码
+
+    ```http
+    HTTP/1.1 403 Forbidden
+    Content-Length: 29
+
+    {"message": "Service expired"}
+    ```
+
+* 因为某些原因不允许访问（比如被 ban ），`403` 状态码
+
+    ```http
+    HTTP/1.1 403 Forbidden
+    Content-Length: 29
+
+    {"message": "Account blocked"}
+    ```
+
+* 权限不够，`403` 状态码
+
+    ```http
+    HTTP/1.1 403 Forbidden
+    Content-Length: 31
+
+    {"message": "Permission denied"}
+    ```
+
+* 需要修改的资源不存在， `404` 状态码
+
+    ```http
+    HTTP/1.1 404 Not Found
+    Content-Length: 32
+
+    {"message": "Resource not found"}
+    ```
+
+* 缺少了必要的头信息，`428` 状态码
+
+    ```http
+    HTTP/1.1 428 Precondition Required
+    Content-Length: 35
+
+    {"message": "Header User-Agent is required"}
+    ```
+
+* 发送了非法的资源，`422` 状态码
+
+    ```http
+    HTTP/1.1 422 Unprocessable Entity
+    Content-Length: 149
+
+    {
+      "message": "Validation Failed",
+      "errors": [
+        {
+          "resource": "Issue",
+          "field": "title",
+          "code": "required"
+        }
+      ]
+    }
+    ```
+
+所有的 `error` 哈希表都有 `resource`, `field`, `code` 字段，以便于定位错误，`code` 字段则用于表示错误类型：
+
+* `invalid`: 某个字段的值非法，接口文档中会提供相应的信息
+* `required`: 缺失某个必须的字段
+* `not_exist`: 说明某个字段的值代表的资源不存在
+* `already_exist`: 发送的资源中的某个字段的值和服务器中已有的某个资源冲突，常见于某些值全局唯一的字段，比如 @ 用的用户名（这个错误我有纠结，因为其实有 409 状态码可以表示，但是在修改某个资源时，很一般显然请求中不止是一种错误，如果是 409 的话，多种错误的场景就不合适了）
+
+其他参考：
+
+* [Microsoft REST API Guidelines - 7.10.2. Error condition responses](https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses)
+* [GitHub Developer - Client errors](https://developer.github.com/v3/#client-errors)
+
+## 分页
+
+请求某个资源集合时，可以通过指定 `count` 参数来指定每页的资源数量，通过 `page` 参数指定页码，或根据需求使用 `last_cursor` 参数指定上一页最后一个资源的标识符替代 `page` 参数。
+
+如果没有传递 `count` 参数或者 `count` 参数的值为空，则使用默认值，建议在设计时设置一个最大值。
+
+分页的相关信息可以包含在 [Link Header](http://tools.ietf.org/html/rfc5988) 和 `X-Pagination-Info` 中（ HTTP 头的语法格式可以参考 [ABNF List Extension: #rule](https://tools.ietf.org/html/rfc7230#section-7) ）。
+
+如果是第一页或者是最后一页时，不返回 `previous` 和 `next` 的 Link 。
+
+```http
+HTTP/1.1 200 OK
+X-Pagination-Info: count="542"
+Link: <http://api.example.com/#{RESOURCE_URI}?last_cursor=&count=100>; rel="first",
+      <http://api.example.com/#{RESOURCE_URI}?last_cursor=200&count=100>; rel="last",
+      <http://api.example.com/#{RESOURCE_URI}?last_cursor=90&count=100>; rel="previous",
+      <http://api.example.com/#{RESOURCE_URI}?last_cursor=120&count=100>; rel="next",
+      <http://api.example.com/#{RESOURCE_URI}?last_cursor={last_cursor}&count={count}>; rel="url-template:pagination"
+
+[
+  ...
+]
+```
+
+相关资料：
+
+* [RFC 5005 第3节 _Paged Feeds_](http://tools.ietf.org/html/rfc5005#section-3)
+* [RFC 5988 6.2.2节 _Initial Registry Contents_](http://tools.ietf.org/html/rfc5988#section-6.2.2)
+
+其他参考：
+
+* [Microsoft REST API Guidelines - 9.8. Pagination](https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#98-pagination)

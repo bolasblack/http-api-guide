@@ -1,8 +1,13 @@
 # HTTP 接口设计指北
 
-* 文档主要目的是为设计接口时提供建议，使大家不必重复造 HTTP 协议已经完成的轮子
-* **只是建议，不是必须遵从的要求**
-* 大家有什么问题想法或者建议欢迎 [创建 Issue](https://github.com/bolasblack/http-api-guide/issues/new) 或者 [提交 Pull Request](https://github.com/bolasblack/http-api-guide/compare/)
+文档主要目的是为大家在设计接口时提供建议，给大家参考 HTTP 或者其他协议/指南已经设计过的内容
+
+**只是建议，不是必须遵从的要求**
+
+大家有什么问题想法或者建议欢迎 [创建 Issue](https://github.com/bolasblack/http-api-guide/issues/new) 或者 [提交 Pull Request](https://github.com/bolasblack/http-api-guide/compare/)
+
+* [README.md](.) 主要是简单介绍和列出对设计可能会有帮助的资料，少放一些私货
+* [SUPPLEMENT.md](./SUPPLEMENT.md) 有一些更细节的接口设计方面的我自己的想法，全是私货
 
 ## 目录
 
@@ -12,10 +17,8 @@
 * [国际化](#user-content-国际化)
 * [请求方法](#user-content-请求方法)
 * [状态码](#user-content-状态码)
-* [错误处理](#user-content-错误处理)
 * [身份验证](#user-content-身份验证)
 * [超文本驱动和资源发现](#user-content-超文本驱动和资源发现)
-* [分页](#user-content-分页)
 * [数据缓存](#user-content-数据缓存)
 * [并发控制](#user-content-并发控制)
 * [跨域](#user-content-跨域)
@@ -53,13 +56,14 @@ HTTP 协议的 2.0 版本还没有正式发布，但目前已经基本稳定下�
 
 ## URL
 
-HOST 地址：
+URL 的设计都需要遵守 [RFC 3986](http://tools.ietf.org/html/rfc3986) 的的规范。
 
-    https://api.example.com
+URL 的长度，在 HTTP/1.1: Message Syntax and Routing([RFC 7230](https://tools.ietf.org/html/rfc7230)) 的 [3.1.1](https://tools.ietf.org/html/rfc7230#section-3.1.1) 小节中有说明，本身不限制长度。但是在实践中，服务器和客户端本身会施加限制*，因此需要根据自己的场景和需求做对应的调整
 
-所有 URI 都需要遵循 [RFC 3986](http://tools.ietf.org/html/rfc3986) 的要求。
+* 比如 IE8 的 URL 最大长度是 2083 个字符；nginx 的 [`large_client_header_buffers`](http://nginx.org/en/docs/http/ngx_http_core_module.html#large_client_header_buffers) 默认值是 8k ，整个 [request-line](https://tools.ietf.org/html/rfc7230#section-3.1.1) 超过 8k 时就会返回 414 (Request-URI Too Large)
+* [Microsoft REST API Guidelines - 7.2. URL length](https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#72-url-length)
 
-**强烈建议 API 部署 SSL 证书**，这样接口传递的数据的安全性才能都得一定的保障。
+**强烈建议 API 部署 SSL 证书**，这样接口传递的数据的安全性才能获得一定的保障。
 
 ## 空字段
 
@@ -250,99 +254,6 @@ PS 考虑到存在[夏时制](https://en.wikipedia.org/wiki/Daylight_saving_time
 * [HTTP Status Codes Decision Diagram – Infographic](https://www.loggly.com/blog/http-status-code-diagram/)
 * [HTTP Status Codes](https://httpstatuses.com/)
 
-## 错误处理
-
-在调用接口的过程中，可能出现下列几种错误情况：
-
-* 服务器维护中，`503` 状态码
-
-    ```http
-    HTTP/1.1 503 Service Unavailable
-    Retry-After: 3600
-    Content-Length: 41
-
-    {"message": "Service In the maintenance"}
-    ```
-
-* 发送了无法转化的请求体，`400` 状态码
-
-    ```http
-    HTTP/1.1 400 Bad Request
-    Content-Length: 35
-
-    {"message": "Problems parsing JSON"}
-    ```
-
-* 服务到期（比如付费的增值服务等）， `403` 状态码
-
-    ```http
-    HTTP/1.1 403 Forbidden
-    Content-Length: 29
-
-    {"message": "Service expired"}
-    ```
-
-* 因为某些原因不允许访问（比如被 ban ），`403` 状态码
-
-    ```http
-    HTTP/1.1 403 Forbidden
-    Content-Length: 29
-
-    {"message": "Account blocked"}
-    ```
-
-* 权限不够，`403` 状态码
-
-    ```http
-    HTTP/1.1 403 Forbidden
-    Content-Length: 31
-
-    {"message": "Permission denied"}
-    ```
-
-* 需要修改的资源不存在， `404` 状态码
-
-    ```http
-    HTTP/1.1 404 Not Found
-    Content-Length: 32
-
-    {"message": "Resource not found"}
-    ```
-
-* 缺少了必要的头信息，`428` 状态码
-
-    ```http
-    HTTP/1.1 428 Precondition Required
-    Content-Length: 35
-
-    {"message": "Header User-Agent is required"}
-    ```
-
-* 发送了非法的资源，`422` 状态码
-
-    ```http
-    HTTP/1.1 422 Unprocessable Entity
-    Content-Length: 149
-
-    {
-      "message": "Validation Failed",
-      "errors": [
-        {
-          "resource": "Issue",
-          "field": "title",
-          "code": "required"
-        }
-      ]
-    }
-    ```
-
-所有的 `error` 哈希表都有 `resource`, `field`, `code` 字段，以便于定位错误，`code` 字段则用于表示错误类型：
-
-* `invalid`: 某个字段的值非法，接口文档中会提供相应的信息
-* `required`: 缺失某个必须的字段
-* `not_exist`: 说明某个字段的值代表的资源不存在
-* `already_exist`: 发送的资源中的某个字段的值和服务器中已有的某个资源冲突，常见于某些值全局唯一的字段，比如 @ 用的用户名（这个错误我有纠结，因为其实有 409 状态码可以表示，但是在修改某个资源时，很一般显然请求中不止是一种错误，如果是 409 的话，多种错误的场景就不合适了）
-
 ## 身份验证
 
 部分接口需要通过某种身份验证方式才能请求成功（这些接口**应该**在文档中标注出来），合适的身份验证解决方案目前有两种：
@@ -367,35 +278,6 @@ REST 服务的要求之一就是[超文本驱动](http://roy.gbiv.com/untangled/
 * [Micro API](http://micro-api.org/) ，一种试图与 [JSON-LD](http://json-ld.org/) 兼容的方案
 
 目前所知的方案都实现了发现资源的功能，服务端同时需要实现 `OPTIONS` 方法，并在响应中携带 `Allow` 头来告知客户端当前拥有的操作权限。
-
-## 分页
-
-请求某个资源集合时，可以通过指定 `count` 参数来指定每页的资源数量，通过 `page` 参数指定页码，或根据需求使用 `last_cursor` 参数指定上一页最后一个资源的标识符替代 `page` 参数。
-
-如果没有传递 `count` 参数或者 `count` 参数的值为空，则使用默认值，建议在设计时设置一个最大值。
-
-分页的相关信息可以包含在 [Link Header](http://tools.ietf.org/html/rfc5988) 和 `X-Pagination-Info` 中（ HTTP 头的语法格式可以参考 [ABNF List Extension: #rule](https://tools.ietf.org/html/rfc7230#section-7) ）。
-
-如果是第一页或者是最后一页时，不返回 `previous` 和 `next` 的 Link 。
-
-```http
-HTTP/1.1 200 OK
-X-Pagination-Info: count="542"
-Link: <http://api.example.com/#{RESOURCE_URI}?last_cursor=&count=100>; rel="first",
-      <http://api.example.com/#{RESOURCE_URI}?last_cursor=200&count=100>; rel="last",
-      <http://api.example.com/#{RESOURCE_URI}?last_cursor=90&count=100>; rel="previous",
-      <http://api.example.com/#{RESOURCE_URI}?last_cursor=120&count=100>; rel="next",
-      <http://api.example.com/#{RESOURCE_URI}?last_cursor={last_cursor}&count={count}>; rel="url-template:pagination"
-
-[
-  ...
-]
-```
-
-相关资料：
-
-* [RFC 5005 第3节 _Paged Feeds_](http://tools.ietf.org/html/rfc5005#section-3)
-* [RFC 5988 6.2.2节 _Initial Registry Contents_](http://tools.ietf.org/html/rfc5988#section-6.2.2)
 
 ## 数据缓存
 
@@ -526,7 +408,13 @@ foo({
 
 这里还有一些其他参考资料：
 
-* 推荐参考文档 [HTTP API Design Guide](https://github.com/interagent/http-api-design/) 来设计 REST 风格的 API ，只有以下两点我个人并不建议参考：
+* [Microsoft REST API Guidelines](https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md) ，很多设计都很有意思，比如：
+    * [7.10.2. Error condition responses](https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses)
+    * [9.8. Pagination](https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#98-pagination)
+    * [10. Delta queries](https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#10-delta-queries)
+    * [13. Long running operations](https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#13-long-running-operations)
+* [GitHub Developer - REST API v3](https://developer.github.com/v3/)
+* [HTTP API Design Guide](https://github.com/interagent/http-api-design/) ，有以下两点我个人并不建议参考：
     * [Use consistent path formats](https://github.com/interagent/http-api-design/#use-consistent-path-formats)
         还是不建议将动作写在 URL 中，像文档中的情况，可以将这个行为抽象成一个事务资源 `POST /runs/:run_id/stop-logs` 或者 `POST /runs/:run_id/stoppers` 来解决
     * [Paginate with Ranges](https://github.com/interagent/http-api-design/#paginate-with-ranges)
