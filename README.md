@@ -23,7 +23,7 @@
 * [并发控制](#user-content-并发控制)
 * [跨域](#user-content-跨域)
 * [其他资料](#user-content-其他资料)
-* [更细节的接口设计指南](#user-content-更细节的接口设计指南)
+* [其他接口设计指南](#user-content-其他接口设计指南)
 
 ## HTTP 协议
 
@@ -405,7 +405,7 @@ foo({
 * [所有在 IANA 注册的消息头和相关标准的列表](http://www.iana.org/assignments/message-headers/message-headers.xhtml)
 * [Standards.REST](https://standards.rest/) 里面收集了不少对 REST API 设计有借鉴意义的标准和规范
 
-## 更细节的接口设计指南
+## 其他接口设计指南
 
 这里还有一些其他参考资料：
 
